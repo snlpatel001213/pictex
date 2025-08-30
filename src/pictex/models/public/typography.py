@@ -36,3 +36,8 @@ class FontSmoothing(str, Enum):
     """Defines the antialiasing strategy for text rendering."""
     SUBPIXEL = "subpixel"
     STANDARD = "standard"
+
+class TextWrap(str, Enum):
+    """Defines how text should wrap within its container."""
+    NORMAL = "normal"  # Allow wrapping (default)
+    NOWRAP = "nowrap"  # Prevent wrapping

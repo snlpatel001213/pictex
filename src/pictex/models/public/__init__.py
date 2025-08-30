@@ -1,6 +1,6 @@
 from .effects import Shadow, OutlineStroke
 from .style import Style
-from .typography import FontStyle, FontWeight, FontSmoothing, TextAlign
+from .typography import FontStyle, FontWeight, FontSmoothing, TextAlign, TextWrap
 from .paint_source import PaintSource
 from .color import SolidColor
 from .linear_gradient import LinearGradient

@@ -9,22 +9,34 @@ class TextShaper:
         self._style = style
         self._font_manager = font_manager
 
-    def shape(self, text: str) -> List[Line]:
+    def shape(self, text: str, max_width: float = None) -> List[Line]:
         """
         Breaks a text string into lines and runs, applying font fallbacks.
         This is the core of the text shaping and fallback logic.
+        If max_width is provided, performs word wrapping.
         """
 
         shaped_lines: list[Line] = []
         font_height = self._get_primary_font_height()
+        
         for line_text in text.split('\n'):
             if not line_text:
                 shaped_lines.append(self._create_empty_line())
                 continue
             
-            runs: list[TextRun] = self._split_line_in_runs(line_text)
-            line = self._create_line(runs, font_height)
-            shaped_lines.append(line)
+            if max_width is not None:
+                wrapped_lines = self._wrap_line_to_width(line_text, max_width)
+                for wrapped_line_text in wrapped_lines:
+                    if not wrapped_line_text:
+                        shaped_lines.append(self._create_empty_line())
+                        continue
+                    runs: list[TextRun] = self._split_line_in_runs(wrapped_line_text)
+                    line = self._create_line(runs, font_height)
+                    shaped_lines.append(line)
+            else:
+                runs: list[TextRun] = self._split_line_in_runs(line_text)
+                line = self._create_line(runs, font_height)
+                shaped_lines.append(line)
         
         return shaped_lines
 
@@ -104,4 +116,78 @@ class TextShaper:
 
     def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
         return typeface.unicharToGlyph(ord(glyph)) != 0
+
+    def _wrap_line_to_width(self, text: str, max_width: float) -> List[str]:
+        """
+        Wraps a single line of text to fit within the specified width.
+        Words are treated as indivisible units.
+        """
+        if not text.strip():
+            return ['']
+        
+        words = text.split()
+        if not words:
+            return ['']
+        
+        primary_font = self._font_manager.get_primary_font()
+        wrapped_lines = []
+        current_line = []
+        current_width = 0
+        space_width = primary_font.measureText(' ')
+        
+        for word in words:
+            word_width = self._measure_word_width(word)
+            
+            # If this is the first word in the line, add it regardless of width
+            if not current_line:
+                current_line.append(word)
+                current_width = word_width
+                continue
+            
+            # Check if adding this word would exceed the max width
+            potential_width = current_width + space_width + word_width
+            
+            if potential_width <= max_width:
+                # Word fits, add it to current line
+                current_line.append(word)
+                current_width = potential_width
+            else:
+                # Word doesn't fit, start a new line
+                wrapped_lines.append(' '.join(current_line))
+                current_line = [word]
+                current_width = word_width
+        
+        # Add the last line if it has content
+        if current_line:
+            wrapped_lines.append(' '.join(current_line))
+        
+        return wrapped_lines if wrapped_lines else ['']
+    
+    def _measure_word_width(self, word: str) -> float:
+        """
+        Measures the width of a word, accounting for font fallbacks.
+        """
+        primary_font = self._font_manager.get_primary_font()
+        total_width = 0
+        current_run_text = ""
+        
+        for char in word:
+            if self._is_glyph_supported_for_typeface(char, primary_font.getTypeface()):
+                current_run_text += char
+                continue
+            
+            # Measure current run with primary font
+            if current_run_text:
+                total_width += primary_font.measureText(current_run_text)
+                current_run_text = ""
+            
+            # Measure fallback character
+            fallback_font = self._get_fallback_font_for_glyph(char, primary_font)
+            total_width += fallback_font.measureText(char)
+        
+        # Measure remaining text with primary font
+        if current_run_text:
+            total_width += primary_font.measureText(current_run_text)
+        
+        return total_width
     

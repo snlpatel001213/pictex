@@ -25,6 +25,7 @@ __all__ = [
     "TextAlign",
     "FontStyle",
     "FontWeight",
+    "TextWrap",
     "TextDecoration",
     "BitmapImage",
     "VectorImage",

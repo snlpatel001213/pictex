@@ -6,7 +6,7 @@ from .effects import Shadow, OutlineStroke
 from .layout import Margin, Padding, HorizontalDistribution, VerticalAlignment, HorizontalAlignment, VerticalDistribution
 from .position import Position
 from .style_property import StyleProperty
-from .typography import TextAlign, FontWeight, FontStyle
+from .typography import TextAlign, FontWeight, FontStyle, TextWrap
 from .paint_source import PaintSource
 from .decoration import TextDecoration
 from .color import SolidColor
@@ -32,6 +32,7 @@ class Style:
     text_stroke: StyleProperty[Optional[OutlineStroke]] = field(default_factory=lambda: StyleProperty(None))
     underline: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
     strikethrough: StyleProperty[Optional[TextDecoration]] = field(default_factory=lambda: StyleProperty(None))
+    text_wrap: StyleProperty[TextWrap] = field(default_factory=lambda: StyleProperty(TextWrap.NORMAL))
 
     # Properties that cannot be inherited.
     box_shadows: StyleProperty[list[Shadow]] = field(default_factory=lambda: StyleProperty([], inheritable=False))

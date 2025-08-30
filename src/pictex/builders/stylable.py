@@ -392,6 +392,19 @@ class Stylable:
         self._style.text_align.set(alignment if isinstance(alignment, TextAlign) else TextAlign(alignment))
         return self
 
+    def text_wrap(self, wrap: Union[TextWrap, str]) -> Self:
+        """Sets how text should wrap within its container.
+
+        Args:
+            wrap: The wrapping behavior, e.g., `TextWrap.NORMAL` or `"normal"` (allow wrapping),
+                  or `TextWrap.NOWRAP` or `"nowrap"` (prevent wrapping).
+
+        Returns:
+            The `Self` instance for chaining.
+        """
+        self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
+        return self
+
     def _build_color(self, color: Union[str, PaintSource]) -> PaintSource:
         """Internal helper to create a SolidColor from a string.
 

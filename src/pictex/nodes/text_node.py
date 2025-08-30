@@ -22,9 +22,10 @@ class TextNode(Node):
     def text_bounds(self) -> Optional[skia.Rect]:
         return self._compute_text_bounds()
 
-    @cached_property('bounds') # This doesn't depend on the bounds right now, but it could in the future (text wrapping)
+    @cached_property('bounds')
     def shaped_lines(self) -> list[Line]:
-        return self._text_shaper.shape(self._text)
+        max_width = self._get_text_wrap_width()
+        return self._text_shaper.shape(self._text, max_width)
 
     def _init_render_dependencies(self, render_props: RenderProps):
         super()._init_render_dependencies(render_props)
@@ -112,3 +113,19 @@ class TextNode(Node):
 
     def _get_all_bounds(self) -> list[skia.Rect]:
         return super()._get_all_bounds() + [self.text_bounds]
+
+    def _get_text_wrap_width(self) -> Optional[float]:
+        """
+        Determines if text wrapping should be applied and returns the maximum width.
+        Returns None if text wrapping should not be applied.
+        """
+        # Check if text wrapping is enabled via style
+        text_wrap_style = self.computed_styles.text_wrap.get()
+        if text_wrap_style.value == 'nowrap':
+            return None
+        
+        # Use the width constraint from the constraint resolution system
+        if self.constraints.has_width_constraint():
+            return self.constraints.get_effective_width()
+        
+        return None
