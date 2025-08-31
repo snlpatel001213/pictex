@@ -18,7 +18,7 @@ class ContainerNode(Node):
         paint_bounds = skia.Rect.MakeEmpty()
 
         children = self._get_positionable_children()
-        positions = self._calculate_children_relative_positions(children, lambda node: node.paint_bounds)
+        positions = self._calculate_children_relative_positions(children, lambda node: node.margin_bounds)
         for i, child in enumerate(children):
             position = positions[i]
             child_bounds_shifted = child.paint_bounds.makeOffset(position[0], position[1])
