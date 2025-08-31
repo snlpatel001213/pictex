@@ -53,7 +53,7 @@ def test_size_fit_background_image(file_regression, render_engine):
     render_func, check_func = render_engine
 
     element = (
-        Row("The row has the size of the image")
+        Row("The row has the size of the image").text_wrap("nowrap")
         .background_image(IMAGE_PATH)
         .fit_background_image()
     )
