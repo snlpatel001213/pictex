@@ -30,17 +30,7 @@ class RowNode(ContainerNode):
         alignment = self.computed_styles.vertical_alignment.get()
         if alignment != VerticalAlignment.STRETCH:
             return
-
-        if not self.constraints.has_height_constraint():
-            return
-
-        padding = self.computed_styles.padding.get()
-        border = self.computed_styles.border.get()
-        border_width = border.width if border else 0
-        vertical_spacing = padding.top + padding.bottom + (border_width * 2)
-        content_height = max(0, self.constraints.get_effective_height() - vertical_spacing)
-
-        # Apply stretch constraints to children with auto height
+        
         children = self._get_positionable_children()
         for child in children:
             child_height = child.computed_styles.height.get()
@@ -49,7 +39,7 @@ class RowNode(ContainerNode):
                 
             child_constraints = Constraints(
                 max_width=child.constraints.get_effective_width() if child.constraints.has_width_constraint() else None,
-                max_height=content_height
+                max_height=self.content_height
             )
             child._constraints = child_constraints
 
@@ -57,16 +47,6 @@ class RowNode(ContainerNode):
         """
         Apply width constraints to children with fill-available width during constraint resolution.
         """
-        if not self.constraints.has_width_constraint():
-            return
-
-        padding = self.computed_styles.padding.get()
-        border = self.computed_styles.border.get()
-        border_width = border.width if border else 0
-        horizontal_spacing = padding.left + padding.right + (border_width * 2)
-        content_width = max(0, self.constraints.get_effective_width() - horizontal_spacing)
-
-        # Identify children with fill-available width and calculate space distribution
         children = self._get_positionable_children()
         fixed_children_width = 0
         flexible_children: list[Node] = []
@@ -83,7 +63,7 @@ class RowNode(ContainerNode):
             return
 
         total_gap_space = user_gap * (len(children) - 1) if len(children) > 1 else 0
-        remaining_space = content_width - fixed_children_width - total_gap_space
+        remaining_space = self.content_width - fixed_children_width - total_gap_space
         space_per_flexible_child = max(0, remaining_space / len(flexible_children))
 
         for child in flexible_children:

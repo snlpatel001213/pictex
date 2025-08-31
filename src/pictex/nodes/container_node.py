@@ -47,51 +47,11 @@ class ContainerNode(Node):
         for child in non_positionable_children:
             child._setup_absolute_position()
 
-    def _compute_node_constraints(self, parent_constraints: Constraints) -> Constraints:
-        """
-        Compute constraints for this container based on parent constraints and own sizing.
-        """
-        width_style = self.computed_styles.width.get()
-        height_style = self.computed_styles.height.get()
-        
-        max_width = None
-        max_height = None
-        
-        # Determine width constraint
-        if width_style:
-            if width_style.mode == SizeValueMode.ABSOLUTE:
-                max_width = float(width_style.value)
-            elif width_style.mode == SizeValueMode.PERCENT and parent_constraints.has_width_constraint():
-                max_width = parent_constraints.get_effective_width() * (width_style.value / 100.0)
-            # For other modes like fill-available, fit-content, we inherit parent constraint
-            elif parent_constraints.has_width_constraint():
-                max_width = parent_constraints.get_effective_width()
-        else:
-            if parent_constraints.has_width_constraint():
-                max_width = parent_constraints.get_effective_width()
-        
-        # Determine height constraint
-        if height_style:
-            if height_style.mode == SizeValueMode.ABSOLUTE:
-                max_height = float(height_style.value)
-            elif height_style.mode == SizeValueMode.PERCENT and parent_constraints.has_height_constraint():
-                max_height = parent_constraints.get_effective_height() * (height_style.value / 100.0)
-            elif parent_constraints.has_height_constraint():
-                max_height = parent_constraints.get_effective_height()
-        else:
-            if parent_constraints.has_height_constraint():
-                max_height = parent_constraints.get_effective_height()
-        
-        return Constraints(max_width=max_width, max_height=max_height)
-
-    def _compute_child_constraints(self, own_constraints: Constraints) -> Constraints:
-        return Constraints.none()
-
-    def _resolve_constraints(self, parent_constraints: Constraints) -> None:
+    def _resolve_constraints(self) -> None:
         """
         Override to handle stretch alignment and fill-available sizing during constraint resolution.
         """
-        super()._resolve_constraints(parent_constraints)
+        super()._resolve_constraints()
         self._apply_stretch_constraints()
         self._apply_fill_available_constraints()
 

@@ -14,15 +14,6 @@ class ColumnNode(ContainerNode):
         if alignment != HorizontalAlignment.STRETCH:
             return
 
-        if not self.constraints.has_width_constraint():
-            return
-
-        padding = self.computed_styles.padding.get()
-        border = self.computed_styles.border.get()
-        border_width = border.width if border else 0
-        horizontal_spacing = padding.left + padding.right + (border_width * 2)
-        content_width = max(0, self.constraints.get_effective_width() - horizontal_spacing)
-
         # Apply stretch constraints to children with auto width
         children = self._get_positionable_children()
         for child in children:
@@ -31,7 +22,7 @@ class ColumnNode(ContainerNode):
                 continue
                 
             child_constraints = Constraints(
-                max_width=content_width,
+                max_width=self.content_width,
                 max_height=child.constraints.get_effective_height() if child.constraints.has_height_constraint() else None
             )
             child._constraints = child_constraints
@@ -40,16 +31,6 @@ class ColumnNode(ContainerNode):
         """
         Apply height constraints to children with fill-available height during constraint resolution.
         """
-        if not self.constraints.has_height_constraint():
-            return
-
-        padding = self.computed_styles.padding.get()
-        border = self.computed_styles.border.get()
-        border_width = border.width if border else 0
-        vertical_spacing = padding.top + padding.bottom + (border_width * 2)
-        content_height = max(0, self.constraints.get_effective_height() - vertical_spacing)
-
-        # Identify children with fill-available height and calculate space distribution
         children = self._get_positionable_children()
         fixed_children_height = 0
         flexible_children: list[Node] = []
@@ -66,7 +47,7 @@ class ColumnNode(ContainerNode):
             return
 
         total_gap_space = user_gap * (len(children) - 1) if len(children) > 1 else 0
-        remaining_space = content_height - fixed_children_height - total_gap_space
+        remaining_space = self.content_height - fixed_children_height - total_gap_space
         space_per_flexible_child = max(0, remaining_space / len(flexible_children))
 
         for child in flexible_children:

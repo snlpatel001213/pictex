@@ -147,7 +147,7 @@ class Node(Cacheable):
         """
         self.clear()
         self._init_render_dependencies(render_props)
-        self._resolve_constraints(Constraints.none())
+        self._resolve_constraints()
         self.clear_bounds()
         self._calculate_bounds()
         self._setup_absolute_position()
@@ -278,7 +278,7 @@ class Node(Cacheable):
     def _get_non_positionable_children(self) -> list[Node]:
         return [child for child in self.children if child.computed_styles.position.get() is not None]
 
-    def _resolve_constraints(self, parent_constraints: Constraints) -> None:
+    def _resolve_constraints(self) -> None:
         """
         Resolves sizing constraints for this node and propagates them to children.
         
@@ -291,28 +291,5 @@ class Node(Cacheable):
         Args:
             parent_constraints: Constraints imposed by the parent
         """
-        # Store the constraints for this node
-        self._constraints = self._compute_node_constraints(parent_constraints)
-        
-        # Propagate constraints to children
-        child_constraints = self._compute_child_constraints(self._constraints)
         for child in self._children:
-            child._resolve_constraints(child_constraints)
-
-    def _compute_node_constraints(self, parent_constraints: Constraints) -> Constraints:
-        """
-        Computes the constraints for this specific node based on parent constraints
-        and this node's own sizing styles.
-        """
-        # Default implementation: inherit parent constraints
-        # Container nodes will override this to provide more specific logic
-        return parent_constraints
-
-    def _compute_child_constraints(self, own_constraints: Constraints) -> Constraints:
-        """
-        Computes the constraints to pass to children based on this node's constraints
-        and layout behavior.
-        """
-        # Default implementation: pass through constraints unchanged
-        # Container nodes will override this to provide layout-specific constraints
-        return own_constraints
+            child._resolve_constraints()
