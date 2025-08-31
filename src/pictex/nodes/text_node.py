@@ -1,7 +1,7 @@
 from typing import Optional
 import skia
 from .node import Node
-from ..models import TextDecoration, Style, RenderProps, Line
+from ..models import TextDecoration, Style, RenderProps, Line, Constraints
 from ..text import FontManager, TextShaper
 from ..painters import Painter, BackgroundPainter, TextPainter, DecorationPainter, BorderPainter
 from ..utils import clone_skia_rect, cached_property, cached_method
@@ -144,3 +144,11 @@ class TextNode(Node):
             return max(0, content_width)
         
         return None
+    
+    def _resolve_constraints(self) -> None:
+        super()._resolve_constraints()
+
+        if not self._parent:
+            return
+        
+        self._constraints = Constraints.fixed_width(self.parent.content_width)
