@@ -89,6 +89,52 @@ def _get_text_wrap_width(self) -> Optional[float]:
 
 ---
 
+## Text Wrapping and Positioning Interaction
+
+### Decision: Positioned elements automatically disable text wrapping
+
+**Context:**
+TextNodes can have both text wrapping enabled and positioning applied. This creates a conceptual question about how these features should interact.
+
+**The Question:**
+Should a TextNode with `position()` set:
+A) Still perform text wrapping based on some constraint, or  
+B) Automatically behave as `text-wrap: nowrap`?
+
+**Decision: Option B** - Positioned elements disable text wrapping
+
+**Rationale:**
+1. **Conceptual clarity**: Positioned elements exist outside the normal layout flow where text wrapping constraints are defined
+2. **Avoids ambiguity**: Without a parent container's layout context, there's no clear width constraint for wrapping
+3. **Consistent with CSS behavior**: Absolutely positioned elements need explicit width to wrap text
+4. **Predictable behavior**: Users expect positioned elements to have full control over their content layout
+
+**Implementation:**
+```python
+def _get_text_wrap_width(self) -> Optional[float]:
+    # If element has positioning, disable text wrapping
+    position_style = self.computed_styles.position.get()
+    if position_style is not None:
+        return None
+```
+
+**Examples:**
+```python
+# This text will NOT wrap, regardless of length
+positioned_text = Text("Very long text").position(x=100, y=50)
+
+# This text WILL wrap within container constraints
+normal_text = Text("Very long text")  # No positioning
+```
+
+**Alternative Considered:**
+Allowing positioned text to wrap was rejected because:
+- It would require arbitrary constraint definition
+- The interaction would be unpredictable
+- It conflicts with the semantic meaning of positioning
+
+---
+
 ## Future Considerations
 
 ### Potential Features for Advanced Users

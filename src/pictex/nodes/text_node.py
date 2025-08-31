@@ -120,8 +120,16 @@ class TextNode(Node):
         available for the text content (after subtracting padding and border).
         Returns None if text wrapping should not be applied.
         """
+        # Check if text wrapping is explicitly disabled
         text_wrap_style = self.computed_styles.text_wrap.get()
         if text_wrap_style.value == 'nowrap':
+            return None
+        
+        # If element has positioning, disable text wrapping
+        # Positioned elements exist outside the normal layout flow where 
+        # text wrapping constraints are defined
+        position_style = self.computed_styles.position.get()
+        if position_style is not None:
             return None
         
         if self.constraints.has_width_constraint():
