@@ -13,18 +13,18 @@ class SizeResolver:
         self._intrinsic_bounds: skia.Rect | None = None
     
     def resolve_width(self) -> int:
-        if self._node.constraints.has_width_constraint():
-            constraint_width = self._node.constraints.get_effective_width()
+        forced_width = self._node.forced_size[0]
+        if forced_width is not None:
             spacing = self._get_horizontal_spacing()
-            return max(0, constraint_width - spacing)
+            return max(0, forced_width - spacing)
 
         return self._resolve_width_from_style()
 
     def resolve_height(self) -> int:
-        if self._node.constraints.has_height_constraint():
-            constraint_height = self._node.constraints.get_effective_height()
+        forced_height = self._node.forced_size[1]
+        if forced_height is not None:
             spacing = self._get_vertical_spacing()
-            return max(0, constraint_height - spacing)
+            return max(0, forced_height - spacing)
 
         return self._resolve_height_from_style()
     
@@ -94,14 +94,10 @@ class SizeResolver:
         if not parent_size_style or parent_size_style.mode == 'fit-content' or parent_size_style.mode == 'auto':
             raise ValueError("Cannot use 'fill-available' size if parent element has 'fit-content' size.")
         
-        # We just return the intrinsic size as a placeholder, this should be recalculated in the second phase (after getting constraints)
+        # We just return the intrinsic size as a placeholder, this should be recalculated in the second phase
         return self._get_intrinsic_axis_size(axis)
 
     def _resolve_width_from_style(self) -> int:
-        """
-        Resolve width based on style properties when no constraints are available.
-        This is the fallback method for elements that don't have parent-imposed constraints.
-        """
         width = self._node.computed_styles.width.get()
         if not width:
             return self._node.compute_intrinsic_width()
@@ -111,10 +107,6 @@ class SizeResolver:
         return max(0, box_width)
 
     def _resolve_height_from_style(self) -> int:
-        """
-        Resolve height based on style properties when no constraints are available.
-        This is the fallback method for elements that don't have parent-imposed constraints.
-        """
         height = self._node.computed_styles.height.get()
         if not height:
             return self._node.compute_intrinsic_height()

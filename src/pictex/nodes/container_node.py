@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 from .node import Node
 from ..painters import Painter, BackgroundPainter, BorderPainter
-from ..models import Style, Constraints, SizeValueMode
+from ..models import Style
 import skia
 
 class ContainerNode(Node):
@@ -47,11 +47,8 @@ class ContainerNode(Node):
         for child in non_positionable_children:
             child._setup_absolute_position()
 
-    def _resolve_constraints(self) -> None:
-        """
-        Override to handle stretch alignment and fill-available sizing during constraint resolution.
-        """
-        super()._resolve_constraints()
+    def _before_calculating_bounds(self) -> None:
+        super()._before_calculating_bounds()
         self._apply_stretch_constraints()
         self._apply_fill_available_constraints()
 

@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 from .container_node import ContainerNode
 from .node import Node
-from ..models import VerticalAlignment, HorizontalDistribution, SizeValueMode, Constraints
+from ..models import VerticalAlignment, HorizontalDistribution, SizeValueMode
 import skia
 
 class RowNode(ContainerNode):
@@ -36,16 +36,12 @@ class RowNode(ContainerNode):
             child_height = child.computed_styles.height.get()
             if child_height and child_height.mode != SizeValueMode.AUTO:
                 continue
-                
-            child_constraints = Constraints(
-                max_width=child.constraints.get_effective_width() if child.constraints.has_width_constraint() else None,
-                max_height=self.content_height
-            )
-            child._constraints = child_constraints
+
+            child._forced_size = (child._forced_size[0], self.content_height)
 
     def _apply_fill_available_constraints(self):
         """
-        Apply width constraints to children with fill-available width during constraint resolution.
+        Apply width constraints to children with fill-available.
         """
         children = self._get_positionable_children()
         fixed_children_width = 0
@@ -67,11 +63,7 @@ class RowNode(ContainerNode):
         space_per_flexible_child = max(0, remaining_space / len(flexible_children))
 
         for child in flexible_children:
-            child_constraints = Constraints(
-                max_width=space_per_flexible_child,
-                max_height=child.constraints.get_effective_height() if child.constraints.has_height_constraint() else None
-            )
-            child._constraints = child_constraints
+            child._forced_size = (space_per_flexible_child, child._forced_size[1])
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
         positions = []

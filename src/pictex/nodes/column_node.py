@@ -1,7 +1,7 @@
 from typing import Tuple, Callable
 from .node import Node
 from .container_node import ContainerNode
-from ..models import HorizontalAlignment, VerticalDistribution, SizeValueMode, Constraints
+from ..models import HorizontalAlignment, VerticalDistribution, SizeValueMode
 import skia
 
 class ColumnNode(ContainerNode):
@@ -14,22 +14,17 @@ class ColumnNode(ContainerNode):
         if alignment != HorizontalAlignment.STRETCH:
             return
 
-        # Apply stretch constraints to children with auto width
         children = self._get_positionable_children()
         for child in children:
             child_width = child.computed_styles.width.get()
             if child_width and child_width.mode != SizeValueMode.AUTO:
                 continue
-                
-            child_constraints = Constraints(
-                max_width=self.content_width,
-                max_height=child.constraints.get_effective_height() if child.constraints.has_height_constraint() else None
-            )
-            child._constraints = child_constraints
+
+            child._forced_size = (self.content_width, self._forced_size[1])
 
     def _apply_fill_available_constraints(self):
         """
-        Apply height constraints to children with fill-available height during constraint resolution.
+        Apply height constraints to children with fill-available height.
         """
         children = self._get_positionable_children()
         fixed_children_height = 0
@@ -51,11 +46,7 @@ class ColumnNode(ContainerNode):
         space_per_flexible_child = max(0, remaining_space / len(flexible_children))
 
         for child in flexible_children:
-            child_constraints = Constraints(
-                max_width=child.constraints.get_effective_width() if child.constraints.has_width_constraint() else None,
-                max_height=space_per_flexible_child
-            )
-            child._constraints = child_constraints
+            child._forced_size = (self._forced_size[0], space_per_flexible_child)
 
     def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()
