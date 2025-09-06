@@ -7,7 +7,7 @@ from .models.public import *
 from .bitmap_image import BitmapImage
 from .vector_image import VectorImage
 
-__version__ = "1.1.1"
+__version__ = "1.2.0"
 
 __all__ = [
     "Canvas",

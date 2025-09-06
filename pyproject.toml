@@ -1,6 +1,6 @@
 [project]
 name = "pictex"
-version = "1.1.1"
+version = "1.2.0"
 description = "A library to generate complex visual compositions and beautifully styled images."
 authors = [
     { name = "Franco Zanardi", email = "francozanardi97@gmail.com" },
@@ -9,7 +9,7 @@ readme = "README.md"
 requires-python = ">=3.9"
 keywords = ["skia", "text-to-image", "image-generation", "typography", "graphics", "text-rendering"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -23,8 +23,10 @@ classifiers = [
     "Operating System :: OS Independent",
     "Natural Language :: English",
     "Topic :: Text Processing :: Fonts",
+    "Topic :: Scientific/Engineering :: Visualization",
     "Typing :: Typed"
 ]
+
 
 dependencies = [
   "skia-python",
@@ -34,6 +36,8 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/francozanardi/pictex"
 Repository = "https://github.com/francozanardi/pictex"
+Issues = "https://github.com/francozanardi/pictex/issues"
+Changelog = "https://github.com/francozanardi/pictex/releases"
 
 [build-system]
 requires = ["hatchling"]
