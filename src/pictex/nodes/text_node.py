@@ -131,11 +131,28 @@ class TextNode(Node):
         if position_style is not None:
             return None
         
-        parent_width = self._parent.content_width
+        width_constraint = self.get_nearest_ancestor_width_constraint()
+        if width_constraint is None:
+            return
+        
         padding = self.computed_styles.padding.get()
         border = self.computed_styles.border.get()
         border_width = border.width if border else 0
         horizontal_spacing = padding.left + padding.right + (border_width * 2)
-        content_width = parent_width - horizontal_spacing
+        content_width = width_constraint - horizontal_spacing
         
         self._text_wrap_width = max(0, content_width)
+
+    def get_nearest_ancestor_width_constraint(self) -> int:
+        ancestor = self._parent
+        while ancestor:
+            width_style = ancestor.computed_styles.width.get()
+            if width_style and width_style.mode not in ['auto', 'fit-content']:
+                return ancestor.content_width
+            
+            if ancestor.forced_size[0] is not None:
+                return ancestor.content_width
+            
+            ancestor = ancestor.parent
+        
+        return None
