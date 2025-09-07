@@ -25,7 +25,7 @@ class TextNode(Node):
 
     @cached_property('bounds')
     def shaped_lines(self) -> list[Line]:
-        return self._text_shaper.shape(self._text, self._text_wrap_width)
+        return self._text_shaper.shape(self._text, self._get_text_wrap_width())
 
     def _init_render_dependencies(self, render_props: RenderProps):
         super()._init_render_dependencies(render_props)

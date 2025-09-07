@@ -3,6 +3,7 @@ from typing import List
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from ..models import Style, Line, TextRun
+import re
 
 class TextShaper:
     def __init__(self, style: Style, font_manager: FontManager):
@@ -122,45 +123,40 @@ class TextShaper:
         Wraps a single line of text to fit within the specified width.
         Words are treated as indivisible units.
         """
-        if not text.strip():
+        # Split into words and spaces, keeping both
+        tokens = re.findall(r'\S+|\s+', text)
+        if not tokens:
             return ['']
-        
-        words = text.split()
-        if not words:
-            return ['']
-        
+
         primary_font = self._font_manager.get_primary_font()
         wrapped_lines = []
         current_line = []
         current_width = 0
-        space_width = primary_font.measureText(' ')
-        
-        for word in words:
-            word_width = self._measure_word_width(word)
-            
-            # If this is the first word in the line, add it regardless of width
+
+        for token in tokens:
+            token_width = primary_font.measureText(token)
+
+            # If it's the first token, add it regardless
             if not current_line:
-                current_line.append(word)
-                current_width = word_width
+                current_line.append(token)
+                current_width = token_width
                 continue
-            
-            # Check if adding this word would exceed the max width
-            potential_width = current_width + space_width + word_width
-            
+
+            potential_width = current_width + token_width
+
             if potential_width <= max_width:
-                # Word fits, add it to current line
-                current_line.append(word)
+                # Token fits, add it
+                current_line.append(token)
                 current_width = potential_width
             else:
-                # Word doesn't fit, start a new line
-                wrapped_lines.append(' '.join(current_line))
-                current_line = [word]
-                current_width = word_width
-        
-        # Add the last line if it has content
+                # Token doesn't fit, start new line
+                wrapped_lines.append(''.join(current_line))
+                current_line = [token]
+                current_width = token_width
+
         if current_line:
-            wrapped_lines.append(' '.join(current_line))
-        
+            wrapped_lines.append(''.join(current_line))
+
         return wrapped_lines if wrapped_lines else ['']
     
     def _measure_word_width(self, word: str) -> float:
