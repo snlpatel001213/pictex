@@ -115,16 +115,7 @@ class TextNode(Node):
     def _get_all_bounds(self) -> list[skia.Rect]:
         return super()._get_all_bounds() + [self.text_bounds]
     
-    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:
-        text_wrap_style = self.computed_styles.text_wrap.get()
-        if text_wrap_style.value == 'nowrap':
-            return
-        
-        # If element has positioning, disable text wrapping
-        position_style = self.computed_styles.position.get()
-        if position_style is not None:
-            return
-        
+    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:      
         if width_constraint is None:
             self._text_wrap_width = self.content_width
             return
@@ -140,6 +131,15 @@ class TextNode(Node):
         self._text_wrap_width = max(0, content_width)
 
     def _get_text_wrap_width(self) -> Optional[int]:
+        text_wrap_style = self.computed_styles.text_wrap.get()
+        if text_wrap_style.value == 'nowrap':
+            return None
+        
+        # If element has positioning, disable text wrapping
+        position_style = self.computed_styles.position.get()
+        if position_style is not None:
+            return None
+    
         if self._forced_size[0] is not None:
             return self._forced_size[0]
         
