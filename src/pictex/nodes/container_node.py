@@ -48,9 +48,10 @@ class ContainerNode(Node):
             child._setup_absolute_position()
 
     def _before_calculating_bounds(self) -> None:
-        super()._before_calculating_bounds()
         self._apply_stretch_constraints()
         self._apply_fill_available_constraints()
+
+        super()._before_calculating_bounds()
 
     def _apply_stretch_constraints(self):
         """

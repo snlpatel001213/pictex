@@ -1,10 +1,31 @@
-from typing import Tuple, Callable
+from typing import Optional, Tuple, Callable
 from .node import Node
 from .container_node import ContainerNode
 from ..models import HorizontalAlignment, VerticalDistribution, SizeValueMode
 import skia
 
 class ColumnNode(ContainerNode):
+
+    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:
+        children = self._get_positionable_children()
+
+        width_contraint = width_constraint if width_constraint is not None else self.content_width
+        for child in children:
+            child._set_width_constraint(width_contraint)
+
+    def compute_min_width(self) -> int:
+        children = self._get_positionable_children()
+        margin = self.computed_styles.margin.get()
+        padding = self.computed_styles.padding.get()
+        border = self.computed_styles.border.get()
+        border_width = border.width if border else 0
+        horizontal_spacing = padding.left + padding.right + (border_width * 2) + margin.left + margin.right
+
+        if not children:
+            return horizontal_spacing
+        
+        min_width = max([child.compute_min_width() for child in children])
+        return min_width + horizontal_spacing
 
     def _apply_stretch_constraints(self):
         """

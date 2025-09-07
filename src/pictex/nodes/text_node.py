@@ -115,44 +115,41 @@ class TextNode(Node):
     def _get_all_bounds(self) -> list[skia.Rect]:
         return super()._get_all_bounds() + [self.text_bounds]
     
-    def _before_calculating_bounds(self) -> None:
-        super()._before_calculating_bounds()
-
-        if not self._parent:
-            return
-        
+    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:
         text_wrap_style = self.computed_styles.text_wrap.get()
         if text_wrap_style.value == 'nowrap':
-            return None
-        
-        # If element has positioning, disable text wrapping.
-        # Positioned elements exist outside the normal layout flow.
-        position_style = self.computed_styles.position.get()
-        if position_style is not None:
-            return None
-        
-        width_constraint = self.get_nearest_ancestor_width_constraint()
-        if width_constraint is None:
             return
         
+        # If element has positioning, disable text wrapping
+        position_style = self.computed_styles.position.get()
+        if position_style is not None:
+            return
+        
+        if width_constraint is None:
+            self._text_wrap_width = self.content_width
+            return
+        
+        wrap_width = width_constraint
+        margin = self.computed_styles.margin.get()
         padding = self.computed_styles.padding.get()
         border = self.computed_styles.border.get()
         border_width = border.width if border else 0
-        horizontal_spacing = padding.left + padding.right + (border_width * 2)
-        content_width = width_constraint - horizontal_spacing
+        horizontal_spacing = padding.left + padding.right + (border_width * 2) + margin.left + margin.right
+        content_width = wrap_width - horizontal_spacing
         
         self._text_wrap_width = max(0, content_width)
 
-    def get_nearest_ancestor_width_constraint(self) -> int:
-        ancestor = self._parent
-        while ancestor:
-            width_style = ancestor.computed_styles.width.get()
-            if width_style and width_style.mode not in ['auto', 'fit-content']:
-                return ancestor.content_width
-            
-            if ancestor.forced_size[0] is not None:
-                return ancestor.content_width
-            
-            ancestor = ancestor.parent
+    def _get_text_wrap_width(self) -> Optional[int]:
+        if self._forced_size[0] is not None:
+            return self._forced_size[0]
         
-        return None
+        return self._text_wrap_width
+    
+    def compute_min_width(self) -> int:
+        original_text_wrap_width = self._text_wrap_width
+        self._clear_bounds()
+        self._text_wrap_width = 1
+        min_width = self.margin_bounds.width()
+        self._clear_bounds()
+        self._text_wrap_width = original_text_wrap_width
+        return min_width

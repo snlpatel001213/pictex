@@ -1,10 +1,95 @@
-from typing import Tuple, Callable
+from typing import Optional, Tuple, Callable, List, Dict
 from .container_node import ContainerNode
 from .node import Node
 from ..models import VerticalAlignment, HorizontalDistribution, SizeValueMode
 import skia
+import math
 
 class RowNode(ContainerNode):
+
+    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:
+        children = self._get_positionable_children()
+        width_constraint = width_constraint if width_constraint is not None else self.content_width
+        gap = self.computed_styles.gap.get()
+        total_gap = gap * (len(children) - 1) if len(children) > 0 else 0
+        available_for_children = max(width_constraint - total_gap, 0)
+        children_with_flexible_width: List[Node] = []
+        fixed_width_total = 0
+
+        for child in children:
+            child_width_property = child.computed_styles.width.get()
+            if not child_width_property or child_width_property.mode in ['auto', 'fit-content']:
+                children_with_flexible_width.append(child)
+            else:
+                child._set_width_constraint(None)
+                fixed_width_total += child.margin_bounds.width()
+
+        available_for_children = max(available_for_children - fixed_width_total, 0)
+        if not children_with_flexible_width:
+            return
+
+        bases: Dict[Node, float] = {}
+        mins: Dict[Node, int] = {}
+        for child in children_with_flexible_width:
+            basis = float(child.margin_bounds.width())
+            if basis <= 0:
+                basis = 1.0
+            bases[child] = basis
+            mins[child] = int(round(child.compute_min_width() or 0))
+
+        remaining = set(children_with_flexible_width)
+        remaining_available = int(available_for_children)
+
+        while remaining:
+            total_basis = sum(bases[c] for c in remaining)
+            raw_allocs = {c: (bases[c] / total_basis) * remaining_available for c in remaining}
+            allocations = {c: int(math.floor(raw_allocs[c])) for c in remaining}
+
+            allocated_sum = sum(allocations.values())
+            leftover = remaining_available - allocated_sum
+            if leftover > 0:
+                residuals = sorted(
+                    remaining,
+                    key=lambda c: (raw_allocs[c] - math.floor(raw_allocs[c])),
+                    reverse=True
+                )
+                for c in residuals[:leftover]:
+                    allocations[c] += 1
+
+            bumped = False
+            to_fix = []
+            for c in list(remaining):
+                alloc = allocations.get(c, 0)
+                minw = mins[c]
+                if alloc < minw:
+                    to_fix.append((c, minw))
+                    bumped = True
+
+            if not bumped:
+                for c in remaining:
+                    child_alloc = int(allocations[c])
+                    c._set_width_constraint(child_alloc)
+                break
+            else:
+                for (c, minw) in to_fix:
+                    c._set_width_constraint(int(minw))
+                    remaining_available = max(remaining_available - int(minw), 0)
+                    remaining.remove(c)
+    
+    def compute_min_width(self) -> int:
+        children = self._get_positionable_children()
+        gap = self.computed_styles.gap.get()
+        total_gap = gap * (len(children) - 1) if len(children) > 1 else 0
+        min_width = total_gap
+        for child in children:
+            min_width += child.compute_min_width()
+        
+        margin = self.computed_styles.margin.get()
+        padding = self.computed_styles.padding.get()
+        border = self.computed_styles.border.get()
+        border_width = border.width if border else 0
+        horizontal_spacing = padding.left + padding.right + (border_width * 2) + margin.left + margin.right
+        return min_width + horizontal_spacing
 
     def compute_intrinsic_width(self) -> int:
         children = self._get_positionable_children()

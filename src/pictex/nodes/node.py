@@ -122,6 +122,9 @@ class Node(Cacheable):
     def _get_painters(self) -> list[Painter]:
         raise NotImplementedError("_get_painters() is not implemented")
     
+    def compute_min_width(self) -> int:
+        raise NotImplementedError("compute_min_width() is not implemented")
+    
     def compute_intrinsic_width(self) -> skia.Rect:
         """
         Compute the intrinsic width. That is, ignoring any size strategy set.
@@ -143,6 +146,8 @@ class Node(Cacheable):
         """
         self.clear()
         self._init_render_dependencies(render_props)
+        self._set_width_constraint(None)
+        self._clear_bounds()
         self._before_calculating_bounds()
         self._clear_bounds()
         self._calculate_bounds()
@@ -277,3 +282,6 @@ class Node(Cacheable):
         """
         for child in self._children:
             child._before_calculating_bounds()
+
+    def _set_width_constraint(self, width_constraint: Optional[int]) -> None:
+        raise NotImplementedError("_set_width_constraint() is not implemented")
