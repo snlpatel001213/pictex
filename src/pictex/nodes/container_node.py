@@ -12,7 +12,7 @@ class ContainerNode(Node):
         self.clear()
 
     def _calculate_children_relative_positions(self, children: list[Node], get_child_bounds: Callable[[Node], skia.Rect]) -> list[Tuple[float, float]]:
-        raise NotImplemented
+        raise NotImplementedError()
     
     def _compute_paint_bounds(self) -> skia.Rect:
         paint_bounds = skia.Rect.MakeEmpty()
@@ -29,6 +29,9 @@ class ContainerNode(Node):
         return paint_bounds
 
     def _get_painters(self) -> list[Painter]:
+        if not self._render_props:
+            raise RuntimeError("Unexpected error: self._render_props is not defined. Parent node should initialize this dependency.")
+
         return [
             BackgroundPainter(self.computed_styles, self.border_bounds, self._render_props.is_svg),
             BorderPainter(self.computed_styles, self.border_bounds),
@@ -36,7 +39,11 @@ class ContainerNode(Node):
 
     def _setup_absolute_position(self, x: float = 0, y: float = 0) -> None:
         super()._setup_absolute_position(x, y)
-        x, y = self._absolute_position
+        absolute_position = self._absolute_position
+        if not absolute_position:
+            raise RuntimeError("Unexpected error: node doesn't have a position defined but it should have.")
+        
+        x, y = absolute_position
         positionable_children = self._get_positionable_children()
         positions = self._calculate_children_relative_positions(positionable_children, lambda node: node.margin_bounds)
         for i, child in enumerate(positionable_children):

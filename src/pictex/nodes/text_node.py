@@ -25,10 +25,15 @@ class TextNode(Node):
 
     @cached_property('bounds')
     def shaped_lines(self) -> list[Line]:
+        if not self._text_shaper:
+            raise RuntimeError("Unexpected error: self._text_shaper is not defined, call _init_render_dependencies() first")
         return self._text_shaper.shape(self._text, self._get_text_wrap_width())
 
     def _init_render_dependencies(self, render_props: RenderProps):
         super()._init_render_dependencies(render_props)
+        if not self._render_props:
+            raise RuntimeError("Unexpected error: self._render_props is not defined. Parent node should initialize this dependency.")
+
         self._font_manager = FontManager(self.computed_styles, self._render_props.font_smoothing)
         self._text_shaper = TextShaper(self.computed_styles, self._font_manager)
 
@@ -39,6 +44,9 @@ class TextNode(Node):
         self._text_wrap_width = None
 
     def _get_painters(self) -> list[Painter]:
+        if not self._font_manager or not self._render_props:
+            raise RuntimeError("Unexpected error: self._font_manager or self._render_props are not defined, call _init_render_dependencies() first")
+        
         return [
             BackgroundPainter(self.computed_styles, self.border_bounds, self._render_props.is_svg),
             BorderPainter(self.computed_styles, self.border_bounds),
@@ -50,6 +58,9 @@ class TextNode(Node):
     #  However, we could include them only in paint bounds, remove them from here.
     @cached_method('bounds')
     def _compute_intrinsic_content_bounds(self) -> skia.Rect:
+        if not self._font_manager:
+            raise RuntimeError("Unexpected error: self._font_manager is not defined, call _init_render_dependencies() first")
+
         line_gap = self.computed_styles.line_height.get() * self.computed_styles.font_size.get()
         content_bounds = skia.Rect.MakeEmpty()
         primary_font = self._font_manager.get_primary_font()

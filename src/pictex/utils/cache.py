@@ -58,7 +58,7 @@ def cached_method(group: str = 'ungrouped'):
 
 class Cacheable:
     def __init__(self) -> None:
-        self._cache_registry = defaultdict(set)
+        self._cache_registry: defaultdict[str, set[str]] = defaultdict(set)
     
     def clear_cache(self, filter_by_group: Optional[str] = None) -> None:
         items_to_remove = []
@@ -66,7 +66,7 @@ class Cacheable:
             items_to_remove = [key for cache_keys in self._cache_registry.values() for key in cache_keys]
             self._cache_registry.clear()
         elif filter_by_group in self._cache_registry:
-            items_to_remove = self._cache_registry[filter_by_group]
+            items_to_remove = list(self._cache_registry[filter_by_group])
             del self._cache_registry[filter_by_group]
 
         for item in items_to_remove:

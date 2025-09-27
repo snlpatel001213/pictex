@@ -1,11 +1,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, TYPE_CHECKING
+from typing import List
 from .box import Box
 from .node_type import NodeType
-
-if TYPE_CHECKING:
-    from ...nodes import Node
 
 @dataclass(frozen=True)
 class RenderNode:
@@ -50,43 +47,3 @@ class RenderNode:
             result.extend(child.find_nodes_by_type(node_type))
         
         return result
-
-
-def _create_render_tree(node: "Node") -> RenderNode:
-    """Creates a RenderNode tree from the internal node structure.
-    
-    Args:
-        node: The internal Node to convert.
-        
-    Returns:
-        A RenderNode representing the node and its children.
-    """
-    from ...nodes import RowNode, ColumnNode, TextNode
-    
-    # Determine node type
-    if isinstance(node, TextNode):
-        node_type = NodeType.TEXT
-    elif isinstance(node, RowNode):
-        node_type = NodeType.ROW
-    elif isinstance(node, ColumnNode):
-        node_type = NodeType.COLUMN
-    else:
-        node_type = NodeType.ELEMENT
-    
-    # Get bounds from border_bounds (equivalent to border bounds)
-    bounds_rect = node.border_bounds
-    bounds = Box(
-        x=int(bounds_rect.left() + node.absolute_position[0]),
-        y=int(bounds_rect.top() + node.absolute_position[1]),
-        width=int(bounds_rect.width()),
-        height=int(bounds_rect.height())
-    )
-    
-    # Recursively create children
-    children = [_create_render_tree(child) for child in node.children]
-    
-    return RenderNode(
-        bounds=bounds,
-        children=children,
-        node_type=node_type
-    )

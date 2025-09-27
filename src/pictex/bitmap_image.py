@@ -1,9 +1,12 @@
 from __future__ import annotations
-from typing import Literal, Optional
+from typing import Literal, Optional, TYPE_CHECKING
 import skia
 import numpy as np
 from .models import Box, RenderNode
 import os
+
+if TYPE_CHECKING:
+    from PIL.Image import Image as PillowImage
 
 class BitmapImage:
     """A wrapper around a rendered raster image.
@@ -112,24 +115,24 @@ class BitmapImage:
         bgra_array = np.frombuffer(self.to_bytes(), dtype=np.uint8).reshape(
             (self.height, self.width, 4)
         )
-        mode = mode.lower()
+        mode_str: str = mode.lower()
 
-        if mode == 'rgba':
+        if mode_str == 'rgba':
             return bgra_array[:, :, [2, 1, 0, 3]]  # Swap R and B channels
 
-        if mode == 'bgra':
+        if mode_str == 'bgra':
             return bgra_array
 
-        if mode == 'rgb':
+        if mode_str == 'rgb':
             return bgra_array[:, :, [2, 1, 0]]
 
-        if mode == 'grayscale':
+        if mode_str == 'grayscale':
             rgb_array = bgra_array[:, :, [2, 1, 0]]
             return np.dot(rgb_array[..., :3], [0.2989, 0.5870, 0.1140]).astype(np.uint8)
 
-        raise ValueError(f"Unsupported mode: '{mode}'. Expected 'RGBA', 'BGRA', 'RGB', or 'Grayscale'.")
+        raise ValueError(f"Unsupported mode: '{mode_str}'. Expected 'RGBA', 'BGRA', 'RGB', or 'Grayscale'.")
 
-    def to_pillow(self) -> "PillowImage":
+    def to_pillow(self) -> PillowImage:
         """Converts the image to a Pillow (PIL) Image object.
 
         The returned Pillow Image will be in 'RGBA' mode.

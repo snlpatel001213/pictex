@@ -16,7 +16,7 @@ class SizeResolver:
         forced_width = self._node.forced_size[0]
         if forced_width is not None:
             spacing = self._get_horizontal_spacing()
-            return max(0, forced_width - spacing)
+            return int(max(0, forced_width - spacing))
 
         return self._resolve_width_from_style()
 
@@ -24,7 +24,7 @@ class SizeResolver:
         forced_height = self._node.forced_size[1]
         if forced_height is not None:
             spacing = self._get_vertical_spacing()
-            return max(0, forced_height - spacing)
+            return int(max(0, forced_height - spacing))
 
         return self._resolve_height_from_style()
     
@@ -104,7 +104,7 @@ class SizeResolver:
 
         spacing = self._get_horizontal_spacing()
         box_width = self._get_axis_size(width, "width", spacing)
-        return max(0, box_width)
+        return int(max(0, box_width))
 
     def _resolve_height_from_style(self) -> int:
         height = self._node.computed_styles.height.get()
@@ -113,5 +113,5 @@ class SizeResolver:
 
         spacing = self._get_vertical_spacing()
         box_height = self._get_axis_size(height, "height", spacing)
-        return max(0, box_height)
+        return int(max(0, box_height))
 

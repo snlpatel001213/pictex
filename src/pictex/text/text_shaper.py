@@ -1,5 +1,5 @@
 import skia
-from typing import List
+from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from ..models import Style, Line, TextRun
@@ -10,7 +10,7 @@ class TextShaper:
         self._style = style
         self._font_manager = font_manager
 
-    def shape(self, text: str, max_width: float = None) -> List[Line]:
+    def shape(self, text: str, max_width: Optional[float] = None) -> List[Line]:
         """
         Breaks a text string into lines and runs, applying font fallbacks.
         This is the core of the text shaping and fallback logic.
@@ -31,8 +31,8 @@ class TextShaper:
                     if not wrapped_line_text:
                         shaped_lines.append(self._create_empty_line())
                         continue
-                    runs: list[TextRun] = self._split_line_in_runs(wrapped_line_text)
-                    line = self._create_line(runs, font_height)
+                    wrapped_runs: list[TextRun] = self._split_line_in_runs(wrapped_line_text)
+                    line = self._create_line(wrapped_runs, font_height)
                     shaped_lines.append(line)
             else:
                 runs: list[TextRun] = self._split_line_in_runs(line_text)
@@ -55,7 +55,7 @@ class TextShaper:
         return line
     
     def _create_line(self, runs: list[TextRun], font_height: float) -> Line:
-        line_width = 0
+        line_width: float = 0
         for run in runs:
             run.width = run.font.measureText(run.text)
             line_width += run.width
@@ -124,21 +124,21 @@ class TextShaper:
         Words are treated as indivisible units.
         """
         # Split into words and spaces, keeping both
-        tokens = re.findall(r'\S+|\s+', text)
+        tokens: list[str] = re.findall(r'\S+|\s+', text)
         if not tokens:
             return ['']
 
         primary_font = self._font_manager.get_primary_font()
-        wrapped_lines = []
-        current_line = []
+        wrapped_lines: List[str] = []
+        current_line_tokens: list[str] = []
         current_width = 0
 
         for token in tokens:
             token_width = primary_font.measureText(token)
 
             # If it's the first token, add it regardless
-            if not current_line:
-                current_line.append(token)
+            if not current_line_tokens:
+                current_line_tokens.append(token)
                 current_width = token_width
                 continue
 
@@ -146,16 +146,16 @@ class TextShaper:
 
             if potential_width <= max_width:
                 # Token fits, add it
-                current_line.append(token)
+                current_line_tokens.append(token)
                 current_width = potential_width
             else:
                 # Token doesn't fit, start new line
-                wrapped_lines.append(''.join(current_line).strip())
-                current_line = [token]
+                wrapped_lines.append(''.join(current_line_tokens).strip())
+                current_line_tokens = [token]
                 current_width = token_width
 
-        if current_line:
-            wrapped_lines.append(''.join(current_line).strip())
+        if current_line_tokens:
+            wrapped_lines.append(''.join(current_line_tokens).strip())
 
         if len(wrapped_lines) == 1:
             # This is to avoid removing spaces at the begining or at the end of a line

@@ -16,10 +16,10 @@ class Node(Cacheable):
         self._children: list[Node] = []
         self._render_props: Optional[RenderProps] = None
         self._absolute_position: Optional[Tuple[float, float]] = None
-        self._forced_size: Tuple[int, int] = (None, None)
+        self._forced_size: Tuple[Optional[int], Optional[int]] = (None, None)
 
     @property
-    def parent(self) -> Node:
+    def parent(self) -> Optional[Node]:
         return self._parent
 
     @property
@@ -47,7 +47,7 @@ class Node(Cacheable):
         return self._absolute_position
 
     @property
-    def forced_size(self) -> Tuple[int, int]:
+    def forced_size(self) -> Tuple[Optional[int], Optional[int]]:
         return self._forced_size
 
     @cached_property(group='bounds')
@@ -178,7 +178,7 @@ class Node(Cacheable):
 
     def _setup_absolute_position(self, x: float = 0, y: float = 0) -> None:
         position = self.computed_styles.position.get()
-        if not position or not self._parent:
+        if not position or not self._parent or not self._parent.absolute_position:
             self._absolute_position = (x, y)
             return
 
@@ -198,7 +198,10 @@ class Node(Cacheable):
 
     def paint(self, canvas: skia.Canvas) -> None:
         canvas.save()
-        x, y = self.absolute_position
+        absolute_position = self.absolute_position
+        if not absolute_position:
+            raise RuntimeError("Unexpected error: node doesn't have a defined position during paint()")
+        x, y = absolute_position
         canvas.translate(x, y)
         for painter in self._get_painters():
             painter.paint(canvas)
@@ -214,7 +217,7 @@ class Node(Cacheable):
 
         self._render_props = None
         self._absolute_position = None
-        self._forced_size: Tuple[int, int] = (None, None)
+        self._forced_size = (None, None)
         self.clear_cache()
 
     def _clear_bounds(self):
@@ -249,7 +252,7 @@ class Node(Cacheable):
         # I don't like this. It only makes sense because it is only being used by paint bounds calculation
         #  However, that responsibility is not clear by the method name.
         #  I mean, if you want to get the shadow bounds in another scenario, this "if" statement don't make any sense.
-        if self._render_props.crop_mode == CropMode.CONTENT_BOX:
+        if self._render_props and self._render_props.crop_mode == CropMode.CONTENT_BOX:
             return source_bounds
         filter = create_composite_shadow_filter(shadows)
         if filter:
@@ -261,7 +264,7 @@ class Node(Cacheable):
             node._parent = self
         self._children = nodes
 
-    def _get_root(self) -> Optional[Node]:
+    def _get_root(self) -> Node:
         root = self
         while root._parent:
             root = root._parent

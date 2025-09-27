@@ -9,4 +9,4 @@ class Painter(ABC):
 
     @abstractmethod
     def paint(self, canvas: skia.Canvas) -> None:
-        raise NotImplemented()
+        raise NotImplementedError()

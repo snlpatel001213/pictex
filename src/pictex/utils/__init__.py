@@ -2,6 +2,7 @@ from .alignment import get_line_x_position
 from .shadow import create_composite_shadow_filter
 from .cache import cached_method, cached_property, Cacheable
 from .font import is_variable_font
+from .render_tree import create_render_tree
 from math import ceil, floor
 import skia
 

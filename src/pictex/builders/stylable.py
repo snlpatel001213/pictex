@@ -189,17 +189,17 @@ class Stylable:
         return self
 
     @overload
-    def padding(self, all: float) -> Self: ...
+    def padding(self, all: Union[float, int]) -> Self: ...
 
     @overload
-    def padding(self, vertical: float, horizontal: float) -> Self: ...
+    def padding(self, vertical: Union[float, int], horizontal: Union[float, int]) -> Self: ...
 
     @overload
     def padding(
-        self, top: float, right: float, bottom: float, left: float
+        self, top: Union[float, int], right: Union[float, int], bottom: Union[float, int], left: Union[float, int]
     ) -> Self: ...
 
-    def padding(self, *args: Union[float, int]) -> Self:
+    def padding(self, *args: Union[float, int]) -> Self:  # type: ignore[misc]
         """Sets padding around the element, similar to CSS.
 
         This method accepts one, two, or four values to specify the padding
@@ -234,17 +234,17 @@ class Stylable:
         return self
 
     @overload
-    def margin(self, all: float) -> Self: ...
+    def margin(self, all: Union[float, int]) -> Self: ...
 
     @overload
-    def margin(self, vertical: float, horizontal: float) -> Self: ...
+    def margin(self, vertical: Union[float, int], horizontal: Union[float, int]) -> Self: ...
 
     @overload
     def margin(
-        self, top: float, right: float, bottom: float, left: float
+        self, top: Union[float, int], right: Union[float, int], bottom: Union[float, int], left: Union[float, int]
     ) -> Self: ...
 
-    def margin(self, *args: Union[float, int]) -> Self:
+    def margin(self, *args: Union[float, int]) -> Self:  # type: ignore[misc]
         """Sets margin around the element, similar to CSS.
 
         This method accepts one, two, or four values to specify the margin
@@ -351,7 +351,7 @@ class Stylable:
     @overload
     def border_radius(self, top_left: Union[float, str], top_right: Union[float, str], bottom_right: Union[float, str], bottom_left: Union[float, str]) -> Self: ...
 
-    def border_radius(self, *args: Union[float, str]) -> Self:
+    def border_radius(self, *args: Union[float, str]) -> Self:  # type: ignore[misc]
         """
         Sets the corner radius for the background, similar to CSS border-radius.
         Accepts absolute values (pixels) or percentages as strings (e.g., "50%").
