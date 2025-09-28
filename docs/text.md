@@ -203,11 +203,12 @@ canvas = (
     Canvas()
     .font_size(150)
     .font_family("Impact")
+    .background_color("beige")
     .color("yellow")
-    .text_stroke(width=14, color="black")
+    .text_stroke(width=7, color="black")
 )
 
 canvas.render("COMIC").save("comic_style.png")
 ```
 
-![Outline stroke result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1754102755/comic_style_ysnmlf.png)
+![Outline stroke result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1759089537/comic_style_pqgvq3.png)
