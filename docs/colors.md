@@ -13,15 +13,28 @@ They can be specified using the `SolidColor` class or using a string in differen
 | 3-digit Hex      | `"#F53"`         | Shorthand for `"#FF5533"`.                |
 | 8-digit Hex (HexA) | `"#FF573380"`   | RRGGBBAA, where AA is the alpha/opacity. |
 
+### Named Colors with NamedColor Enum
+
+For better type safety and autocompletion, you can use the `NamedColor` enum which provides all CSS named colors:
+
+```python
+from pictex import Canvas, SolidColor, NamedColor
+
+Canvas().color(NamedColor.RED)
+Canvas().color(NamedColor.CORNFLOWERBLUE)
+Canvas().color(NamedColor.GOLD)
+```
+
 For example, all these are valid ways to set the color to red:
 
 ```python
-from pictex import Canvas, SolidColor
+from pictex import Canvas, SolidColor, NamedColor
 
 Canvas().color("#FF0000FF")
 Canvas().color("#FF0000")
 Canvas().color("#F00")
 Canvas().color("red")
+Canvas().color(NamedColor.RED)
 Canvas().color(SolidColor(255, 0, 0, 255))
 Canvas().color(SolidColor(255, 0, 0))
 ```
