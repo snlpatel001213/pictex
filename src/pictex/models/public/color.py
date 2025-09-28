@@ -159,6 +159,8 @@ class NamedColor(str, Enum):
     YELLOW = '#ffff00'
     YELLOWGREEN = '#9acd32'
 
+    _ignore_ = []
+
 
 @dataclass(frozen=True)
 class SolidColor(PaintSource):
@@ -228,10 +230,10 @@ class SolidColor(PaintSource):
         clean_value = value.strip().lower()
         if clean_value.startswith('#'):
             return cls._from_hex(clean_value)
-
-        for named_color in NamedColor:
-            if named_color.name.lower() == clean_value:
-                return cls._from_hex(named_color.value)
+        
+        upper_clean_value = clean_value.upper()
+        if upper_clean_value in NamedColor.__members__:
+            return cls._from_hex(NamedColor.__members__[upper_clean_value].value)
 
         raise ValueError(f"Unknown color name or format: '{value}'")
 
