@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="468" height="150">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
 @font-face {
     font-family: 'pictex-Lato';
@@ -22,7 +22,7 @@
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
 }
             
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="468" height="150" />

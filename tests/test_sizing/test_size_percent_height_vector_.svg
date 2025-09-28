@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="400">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="300" height="400" />

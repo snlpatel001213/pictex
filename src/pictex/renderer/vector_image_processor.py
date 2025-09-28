@@ -68,9 +68,9 @@ class VectorImageProcessor:
         css = self._get_css_code_for_typefaces(typefaces, embed_fonts)
         defs = f"""
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         {css}
-    </builders>
+    </style>
 </defs>
             """
 

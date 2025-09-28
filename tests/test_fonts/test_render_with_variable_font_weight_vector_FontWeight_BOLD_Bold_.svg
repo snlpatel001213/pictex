@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="363" height="104">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
 @font-face {
     font-family: 'pictex-Oswald';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
 }
             
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="363" height="104" />

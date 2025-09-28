@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="400" height="400">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="400" height="400" />
