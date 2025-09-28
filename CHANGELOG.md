@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+
+- Added comprehensive type annotations and mypy static type checking integration
+
 ### Changed
 
 - Exclude development files from package distribution (/.github, /docs, /examples, /tests, .gitignore, *.yml, *.yaml)

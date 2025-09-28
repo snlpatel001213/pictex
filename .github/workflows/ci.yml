@@ -1,4 +1,4 @@
-name: Run Python Tests
+name: CI
 
 on: [push, pull_request]
 
@@ -34,6 +34,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e ".[test]"
+
+    - name: Run type checking with mypy
+      run: |
+        mypy src/pictex
 
     - name: Run tests with coverage
       run: |
