@@ -10,10 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added comprehensive type annotations and mypy static type checking integration
+- **NamedColor Enum**: Exposed `NamedColor` enum class to improve developer experience when using colors. The enum provides easy access to all supported named colors with autocompletion and type safety.
 
 ### Changed
 
 - Exclude development files from package distribution (/.github, /docs, /examples, /tests, .gitignore, *.yml, *.yaml)
+- **BREAKING**: `text_stroke()` behavior now aligns with CSS standards. The stroke is now rendered centered on the text outline (half inside, half outside) instead of only outward. This matches `-webkit-text-stroke` behavior but will make stroked text appear visually thicker. Existing designs using this feature may need adjustment.
 
 ## [1.3.3] - 2025-09-27
 
