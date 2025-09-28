@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="565" height="536">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
 @font-face {
     font-family: 'pictex-Oswald';
@@ -12,7 +12,7 @@
     src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
 }
             
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="565" height="536" />

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="869" height="84">
 <defs>
-    <builders type="text/css">
+    <style type="text/css">
         
 @font-face {
     font-family: 'pictex-Lato';
@@ -12,7 +12,7 @@
     src: url('/home/runner/work/pictex/pictex/tests/assets/NotoSansJP-Regular.ttf');
 }
             
-    </builders>
+    </style>
 </defs>
             
 	<rect fill-opacity="0" width="869" height="84" />

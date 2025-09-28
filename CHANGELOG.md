@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Fixed
+- Fixed SVG rendering with custom font files being embedded. It was not working because a wrong SVG tag was being used.
+
 ### Added
 
 - Added comprehensive type annotations and mypy static type checking integration
