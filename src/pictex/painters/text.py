@@ -51,9 +51,9 @@ class TextPainter(Painter):
             current_x = draw_x_start
             
             for run in line.runs:
+                canvas.drawString(run.text, current_x, current_y, run.font, paint)
                 if outline_paint:
                     canvas.drawString(run.text, current_x, current_y, run.font, outline_paint)
-                canvas.drawString(run.text, current_x, current_y, run.font, paint)
                 current_x += run.width
             
             current_y += line_gap
