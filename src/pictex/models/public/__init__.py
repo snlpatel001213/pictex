@@ -2,7 +2,7 @@ from .effects import Shadow, OutlineStroke
 from .style import Style
 from .typography import FontStyle, FontWeight, FontSmoothing, TextAlign, TextWrap
 from .paint_source import PaintSource
-from .color import SolidColor
+from .color import SolidColor, NamedColor
 from .linear_gradient import LinearGradient
 from .decoration import TextDecoration
 from .crop import CropMode
@@ -19,12 +19,15 @@ __all__ = [
     "Shadow", "OutlineStroke",
     "Style",
     "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap",
-    "PaintSource", "SolidColor", "LinearGradient",
+    "PaintSource",
+    "SolidColor", "NamedColor",
+    "LinearGradient",
     "TextDecoration",
     "CropMode",
-    "Box", "Position", "PositionMode", "SizeValue", "SizeValueMode",
-    "Margin", "Padding", "HorizontalDistribution", "VerticalAlignment",
-    "HorizontalAlignment", "VerticalDistribution",
+    "Box",
+    "Position", "PositionMode",
+    "SizeValue", "SizeValueMode",
+    "Margin", "Padding", "HorizontalDistribution", "VerticalAlignment", "HorizontalAlignment", "VerticalDistribution",
     "BackgroundImage", "BackgroundImageSizeMode",
     "Border", "BorderStyle", "BorderRadiusValue", "BorderRadius",
     "RenderNode",

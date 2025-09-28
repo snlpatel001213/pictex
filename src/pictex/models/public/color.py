@@ -1,161 +1,163 @@
 from __future__ import annotations
 from dataclasses import dataclass
+from enum import Enum
+from .paint_source import PaintSource
 import skia
 
-from .paint_source import PaintSource
+class NamedColor(str, Enum):
+    """Named color constants from CSS specification.
 
-# Obtained from: https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
-NAMED_COLORS = {
-    'transparent': '#00000000',
-    'aliceblue': '#f0f8ff',
-    'antiquewhite': '#faebd7',
-    'aqua': '#00ffff',
-    'aquamarine': '#7fffd4',
-    'azure': '#f0ffff',
-    'beige': '#f5f5dc',
-    'bisque': '#ffe4c4',
-    'black': '#000000',
-    'blanchedalmond': '#ffebcd',
-    'blue': '#0000ff',
-    'blueviolet': '#8a2be2',
-    'brown': '#a52a2a',
-    'burlywood': '#deb887',
-    'cadetblue': '#5f9ea0',
-    'chartreuse': '#7fff00',
-    'chocolate': '#d2691e',
-    'coral': '#ff7f50',
-    'cornflowerblue': '#6495ed',
-    'cornsilk': '#fff8dc',
-    'crimson': '#dc143c',
-    'cyan': '#00ffff',   # synonym of aqua
-    'darkblue': '#00008b',
-    'darkcyan': '#008b8b',
-    'darkgoldenrod': '#b8860b',
-    'darkgray': '#a9a9a9',
-    'darkgreen': '#006400',
-    'darkgrey': '#a9a9a9',  # synonym of darkgray
-    'darkkhaki': '#bdb76b',
-    'darkmagenta': '#8b008b',
-    'darkolivegreen': '#556b2f',
-    'darkorange': '#ff8c00',
-    'darkorchid': '#9932cc',
-    'darkred': '#8b0000',
-    'darksalmon': '#e9967a',
-    'darkseagreen': '#8fbc8f',
-    'darkslateblue': '#483d8b',
-    'darkslategray': '#2f4f4f',
-    'darkslategrey': '#2f4f4f',  # synonym
-    'darkturquoise': '#00ced1',
-    'darkviolet': '#9400d3',
-    'deeppink': '#ff1493',
-    'deepskyblue': '#00bfff',
-    'dimgray': '#696969',
-    'dimgrey': '#696969',  # synonym
-    'dodgerblue': '#1e90ff',
-    'firebrick': '#b22222',
-    'floralwhite': '#fffaf0',
-    'forestgreen': '#228b22',
-    'fuchsia': '#ff00ff',
-    'gainsboro': '#dcdcdc',
-    'ghostwhite': '#f8f8ff',
-    'gold': '#ffd700',
-    'goldenrod': '#daa520',
-    'gray': '#808080',
-    'green': '#008000',
-    'greenyellow': '#adff2f',
-    'grey': '#808080',  # synonym of gray
-    'honeydew': '#f0fff0',
-    'hotpink': '#ff69b4',
-    'indianred': '#cd5c5c',
-    'indigo': '#4b0082',
-    'ivory': '#fffff0',
-    'khaki': '#f0e68c',
-    'lavender': '#e6e6fa',
-    'lavenderblush': '#fff0f5',
-    'lawngreen': '#7cfc00',
-    'lemonchiffon': '#fffacd',
-    'lightblue': '#add8e6',
-    'lightcoral': '#f08080',
-    'lightcyan': '#e0ffff',
-    'lightgoldenrodyellow': '#fafad2',
-    'lightgray': '#d3d3d3',
-    'lightgreen': '#90ee90',
-    'lightgrey': '#d3d3d3',  # synonym
-    'lightpink': '#ffb6c1',
-    'lightsalmon': '#ffa07a',
-    'lightseagreen': '#20b2aa',
-    'lightskyblue': '#87cefa',
-    'lightslategray': '#778899',
-    'lightslategrey': '#778899',  # synonym
-    'lightsteelblue': '#b0c4de',
-    'lightyellow': '#ffffe0',
-    'lime': '#00ff00',
-    'limegreen': '#32cd32',
-    'linen': '#faf0e6',
-    'magenta': '#ff00ff',  # synonym of fuchsia
-    'maroon': '#800000',
-    'mediumaquamarine': '#66cdaa',
-    'mediumblue': '#0000cd',
-    'mediumorchid': '#ba55d3',
-    'mediumpurple': '#9370db',
-    'mediumseagreen': '#3cb371',
-    'mediumslateblue': '#7b68ee',
-    'mediumspringgreen': '#00fa9a',
-    'mediumturquoise': '#48d1cc',
-    'mediumvioletred': '#c71585',
-    'midnightblue': '#191970',
-    'mintcream': '#f5fffa',
-    'mistyrose': '#ffe4e1',
-    'moccasin': '#ffe4b5',
-    'navajowhite': '#ffdead',
-    'navy': '#000080',
-    'oldlace': '#fdf5e6',
-    'olive': '#808000',
-    'olivedrab': '#6b8e23',
-    'orange': '#ffa500',
-    'orangered': '#ff4500',
-    'orchid': '#da70d6',
-    'palegoldenrod': '#eee8aa',
-    'palegreen': '#98fb98',
-    'paleturquoise': '#afeeee',
-    'palevioletred': '#db7093',
-    'papayawhip': '#ffefd5',
-    'peachpuff': '#ffdab9',
-    'peru': '#cd853f',
-    'pink': '#ffc0cb',
-    'plum': '#dda0dd',
-    'powderblue': '#b0e0e6',
-    'purple': '#800080',
-    'rebeccapurple': '#663399',
-    'red': '#ff0000',
-    'rosybrown': '#bc8f8f',
-    'royalblue': '#4169e1',
-    'saddlebrown': '#8b4513',
-    'salmon': '#fa8072',
-    'sandybrown': '#f4a460',
-    'seagreen': '#2e8b57',
-    'seashell': '#fff5ee',
-    'sienna': '#a0522d',
-    'silver': '#c0c0c0',
-    'skyblue': '#87ceeb',
-    'slateblue': '#6a5acd',
-    'slategray': '#708090',
-    'slategrey': '#708090',  # synonym
-    'snow': '#fffafa',
-    'springgreen': '#00ff7f',
-    'steelblue': '#4682b4',
-    'tan': '#d2b48c',
-    'teal': '#008080',
-    'thistle': '#d8bfd8',
-    'tomato': '#ff6347',
-    'turquoise': '#40e0d0',
-    'violet': '#ee82ee',
-    'wheat': '#f5deb3',
-    'white': '#ffffff',
-    'whitesmoke': '#f5f5f5',
-    'yellow': '#ffff00',
-    'yellowgreen': '#9acd32',
-}
+    Obtained from: https://developer.mozilla.org/en-US/docs/Web/CSS/named-color
+    """
+    TRANSPARENT = '#00000000'
+    ALICEBLUE = '#f0f8ff'
+    ANTIQUEWHITE = '#faebd7'
+    AQUA = '#00ffff'
+    AQUAMARINE = '#7fffd4'
+    AZURE = '#f0ffff'
+    BEIGE = '#f5f5dc'
+    BISQUE = '#ffe4c4'
+    BLACK = '#000000'
+    BLANCHEDALMOND = '#ffebcd'
+    BLUE = '#0000ff'
+    BLUEVIOLET = '#8a2be2'
+    BROWN = '#a52a2a'
+    BURLYWOOD = '#deb887'
+    CADETBLUE = '#5f9ea0'
+    CHARTREUSE = '#7fff00'
+    CHOCOLATE = '#d2691e'
+    CORAL = '#ff7f50'
+    CORNFLOWERBLUE = '#6495ed'
+    CORNSILK = '#fff8dc'
+    CRIMSON = '#dc143c'
+    CYAN = '#00ffff'  # synonym of aqua
+    DARKBLUE = '#00008b'
+    DARKCYAN = '#008b8b'
+    DARKGOLDENROD = '#b8860b'
+    DARKGRAY = '#a9a9a9'
+    DARKGREEN = '#006400'
+    DARKGREY = '#a9a9a9'  # synonym of darkgray
+    DARKKHAKI = '#bdb76b'
+    DARKMAGENTA = '#8b008b'
+    DARKOLIVEGREEN = '#556b2f'
+    DARKORANGE = '#ff8c00'
+    DARKORCHID = '#9932cc'
+    DARKRED = '#8b0000'
+    DARKSALMON = '#e9967a'
+    DARKSEAGREEN = '#8fbc8f'
+    DARKSLATEBLUE = '#483d8b'
+    DARKSLATEGRAY = '#2f4f4f'
+    DARKSLATEGREY = '#2f4f4f'  # synonym
+    DARKTURQUOISE = '#00ced1'
+    DARKVIOLET = '#9400d3'
+    DEEPPINK = '#ff1493'
+    DEEPSKYBLUE = '#00bfff'
+    DIMGRAY = '#696969'
+    DIMGREY = '#696969'  # synonym
+    DODGERBLUE = '#1e90ff'
+    FIREBRICK = '#b22222'
+    FLORALWHITE = '#fffaf0'
+    FORESTGREEN = '#228b22'
+    FUCHSIA = '#ff00ff'
+    GAINSBORO = '#dcdcdc'
+    GHOSTWHITE = '#f8f8ff'
+    GOLD = '#ffd700'
+    GOLDENROD = '#daa520'
+    GRAY = '#808080'
+    GREEN = '#008000'
+    GREENYELLOW = '#adff2f'
+    GREY = '#808080'  # synonym of gray
+    HONEYDEW = '#f0fff0'
+    HOTPINK = '#ff69b4'
+    INDIANRED = '#cd5c5c'
+    INDIGO = '#4b0082'
+    IVORY = '#fffff0'
+    KHAKI = '#f0e68c'
+    LAVENDER = '#e6e6fa'
+    LAVENDERBLUSH = '#fff0f5'
+    LAWNGREEN = '#7cfc00'
+    LEMONCHIFFON = '#fffacd'
+    LIGHTBLUE = '#add8e6'
+    LIGHTCORAL = '#f08080'
+    LIGHTCYAN = '#e0ffff'
+    LIGHTGOLDENRODYELLOW = '#fafad2'
+    LIGHTGRAY = '#d3d3d3'
+    LIGHTGREEN = '#90ee90'
+    LIGHTGREY = '#d3d3d3'  # synonym
+    LIGHTPINK = '#ffb6c1'
+    LIGHTSALMON = '#ffa07a'
+    LIGHTSEAGREEN = '#20b2aa'
+    LIGHTSKYBLUE = '#87cefa'
+    LIGHTSLATEGRAY = '#778899'
+    LIGHTSLATEGREY = '#778899'  # synonym
+    LIGHTSTEELBLUE = '#b0c4de'
+    LIGHTYELLOW = '#ffffe0'
+    LIME = '#00ff00'
+    LIMEGREEN = '#32cd32'
+    LINEN = '#faf0e6'
+    MAGENTA = '#ff00ff'  # synonym of fuchsia
+    MAROON = '#800000'
+    MEDIUMAQUAMARINE = '#66cdaa'
+    MEDIUMBLUE = '#0000cd'
+    MEDIUMORCHID = '#ba55d3'
+    MEDIUMPURPLE = '#9370db'
+    MEDIUMSEAGREEN = '#3cb371'
+    MEDIUMSLATEBLUE = '#7b68ee'
+    MEDIUMSPRINGGREEN = '#00fa9a'
+    MEDIUMTURQUOISE = '#48d1cc'
+    MEDIUMVIOLETRED = '#c71585'
+    MIDNIGHTBLUE = '#191970'
+    MINTCREAM = '#f5fffa'
+    MISTYROSE = '#ffe4e1'
+    MOCCASIN = '#ffe4b5'
+    NAVAJOWHITE = '#ffdead'
+    NAVY = '#000080'
+    OLDLACE = '#fdf5e6'
+    OLIVE = '#808000'
+    OLIVEDRAB = '#6b8e23'
+    ORANGE = '#ffa500'
+    ORANGERED = '#ff4500'
+    ORCHID = '#da70d6'
+    PALEGOLDENROD = '#eee8aa'
+    PALEGREEN = '#98fb98'
+    PALETURQUOISE = '#afeeee'
+    PALEVIOLETRED = '#db7093'
+    PAPAYAWHIP = '#ffefd5'
+    PEACHPUFF = '#ffdab9'
+    PERU = '#cd853f'
+    PINK = '#ffc0cb'
+    PLUM = '#dda0dd'
+    POWDERBLUE = '#b0e0e6'
+    PURPLE = '#800080'
+    REBECCAPURPLE = '#663399'
+    RED = '#ff0000'
+    ROSYBROWN = '#bc8f8f'
+    ROYALBLUE = '#4169e1'
+    SADDLEBROWN = '#8b4513'
+    SALMON = '#fa8072'
+    SANDYBROWN = '#f4a460'
+    SEAGREEN = '#2e8b57'
+    SEASHELL = '#fff5ee'
+    SIENNA = '#a0522d'
+    SILVER = '#c0c0c0'
+    SKYBLUE = '#87ceeb'
+    SLATEBLUE = '#6a5acd'
+    SLATEGRAY = '#708090'
+    SLATEGREY = '#708090'  # synonym
+    SNOW = '#fffafa'
+    SPRINGGREEN = '#00ff7f'
+    STEELBLUE = '#4682b4'
+    TAN = '#d2b48c'
+    TEAL = '#008080'
+    THISTLE = '#d8bfd8'
+    TOMATO = '#ff6347'
+    TURQUOISE = '#40e0d0'
+    VIOLET = '#ee82ee'
+    WHEAT = '#f5deb3'
+    WHITE = '#ffffff'
+    WHITESMOKE = '#f5f5f5'
+    YELLOW = '#ffff00'
+    YELLOWGREEN = '#9acd32'
 
 
 @dataclass(frozen=True)
@@ -227,9 +229,9 @@ class SolidColor(PaintSource):
         if clean_value.startswith('#'):
             return cls._from_hex(clean_value)
 
-        hex_code = NAMED_COLORS.get(clean_value)
-        if hex_code:
-            return cls._from_hex(hex_code)
+        for named_color in NamedColor:
+            if named_color.name.lower() == clean_value:
+                return cls._from_hex(named_color.value)
 
         raise ValueError(f"Unknown color name or format: '{value}'")
 
