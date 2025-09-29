@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="200">
+	<rect fill-opacity="0" width="500" height="200" />
+	<rect fill="#ECF0F1" width="500" height="200" />
+	<rect fill="#34495E" transform="translate(250 20)" width="618" height="79" />
+	<text fill="white" transform="translate(250 20)" font-size="50" font-family="DejaVu Sans" x="10, 45, 76, 108, 128, 159, 178.90137, 209.90137, 241.90137, 257.90137, 288.90137, 320.90137, 336.90137, 368.90137, 400.90137, 448.90137, 464.90137, 480.90137, 512.90137, 544.90137, 576.90137, " y="56.411133, ">
+			Centered on 50%, 20px
+	</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="357" height="409">
+	<rect fill-opacity="0" width="357" height="409" />
+	<rect fill="#ECF0F1" width="300" height="400" />
+	<rect fill="#F39C12" transform="translate(20 20)" width="246" height="50" />
+	<text transform="translate(20 20)" font-size="50" font-family="DejaVu Sans" x="0, 25.362305, 39.362305, 67.824219, 98.824219, 130.82422, 146.82422, 169.32812, 200.32812, " y="46.411133, ">
+			Fixed Top
+	</text>
+	<rect fill="#2980B9" transform="translate(20 80)" width="243" height="125" />
+	<text transform="translate(20 80)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 73.121094, 103.12109, 117.12109, 149.12109, 163.12109, 194.12109, 210.12109, " y="46.411133, ">
+			Flexible 1
+	</text>
+	<rect fill="#8E44AD" transform="translate(20 215)" width="243" height="125" />
+	<text transform="translate(20 215)" font-size="50" font-family="DejaVu Sans" x="0, 29, 43, 73.121094, 103.12109, 117.12109, 149.12109, 163.12109, 194.12109, 210.12109, " y="46.411133, ">
+			Flexible 2
+	</text>
+	<rect fill="#F39C12" transform="translate(20 350)" width="337" height="30" />
+	<text transform="translate(20 350)" font-size="50" font-family="DejaVu Sans" x="0, 25.362305, 39.362305, 67.824219, 98.824219, 130.82422, 146.82422, 180.82422, 211.82422, 231.82422, 251.82422, 282.82422, " y="46.411133, ">
+			Fixed Bottom
+	</text>
+</svg>

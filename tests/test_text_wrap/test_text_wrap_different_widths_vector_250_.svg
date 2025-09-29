@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="250" height="109"><defs><style type="text/css">@font-face {
+    font-family: 'pictex-Lato';
+    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+}</style></defs>
+	<rect fill-opacity="0" width="250" height="109" />
+	<rect fill="#DDD" width="250" height="109" />
+	<rect fill="#F5F5DC" transform="translate(10 10)" width="208" height="89" />
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 16, 24, 28, 34, 37, 41, 47, 50, 57, 60, 66.768997, 73.768997, 78.768997, 85.768997, 88.768997, 92.768997, 99.768997, 107.769, 114.769, 117.769, 123.769, 130.769, 138.769, 143.769, 150.769, 158.769, 164.769, 171.769, 174.769, 179.769, 187.769, 194.769, " y="21.818001, ">
+			This is a very long sentence that
+	</text>
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 18, 22, 26, 30, 33, 41, 48, 59, 66, 74, 80, 85, 89.720001, 96.720001, 101.72, 108.72, 111.72, 116.72, 123.328, 130.328, 135.328, 138.328, 148.328, 153.048, 160.048, 167.048, 174.048, 178.048, 186.048, " y="35.818001, ">
+			will demonstrate text wrapping
+	</text>
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 16, 23, 31, 38, 45, 49, 56, 61, 64, 74, 82, 89, 97, 100, 107, 111, 118, 124, 131, 139, 142, 146, 154, 160, 164, 172, " y="49.818001, ">
+			behavior when placed inside
+	</text>
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 14, 21, 29, 34, 41, 45, 53, 60, 65, 71, 74, 84, 88, 93, 101, 104, 110.769, 117.769, 122.769, 126.769, 133.769, 141.769, 147.769, 150.769, 160.769, 164.769, 172.769, 177.769, " y="63.818001, ">
+			containers with various width
+	</text>
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 14, 21, 29, 35, 40, 44.720001, 51.720001, 55.720001, 63.720001, 68.720001, 74.720001, 77.720001, 84.720001, 92.720001, 100.72, 103.72, 109.72, 116.72, 121.72, 126.72, 130.72, 138.72, 145.72, 151.72, " y="77.818001, ">
+			constraints and settings.
+	</text>
+</svg>
