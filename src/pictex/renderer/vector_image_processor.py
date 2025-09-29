@@ -95,7 +95,7 @@ class VectorImageProcessor:
         
         css = ""
         for typeface in typefaces:
-            font_family = self._get_svg_normalized_family_name(typeface.typeface)
+            font_family = self._get_svg_normalized_family_name(typeface)
             filepath = typeface.filepath
             if not filepath:
                 continue
@@ -123,21 +123,25 @@ class VectorImageProcessor:
         family_names = list(map(lambda fn: fn[0], typeface.getFamilyNames()))
         return ", ".join(family_names)
     
-    def _get_svg_normalized_family_name(self, typeface: skia.Typeface) -> str:
-        font_family = self._get_svg_family_name(typeface)
+    def _get_svg_normalized_family_name(self, typeface: TypefaceLoadingInfo) -> str:
+        font_family = self._get_svg_family_name(typeface.typeface)
+        if typeface.source == TypefaceSource.SYSTEM:
+            return font_family
         return re.sub(r"\s+|,", "", font_family)
     
     def _normalize_font_family_names(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
         for typeface in typefaces:
             font_family = self._get_svg_family_name(typeface.typeface)
-            normalized_font_family = self._get_svg_normalized_family_name(typeface.typeface)
+            normalized_font_family = self._get_svg_normalized_family_name(typeface)
             svg = svg.replace(f"'{font_family}'", f"'{normalized_font_family}'")
             svg = svg.replace(f'"{font_family}"', f'"{normalized_font_family}"')
         return svg
     
     def _add_prefix_to_font_families(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
         for typeface in typefaces:
-            font_family = self._get_svg_normalized_family_name(typeface.typeface)
+            if typeface.source == TypefaceSource.SYSTEM:
+                continue
+            font_family = self._get_svg_normalized_family_name(typeface)
             svg = svg.replace(f"'{font_family}'", f"'pictex-{font_family}'")
             svg = svg.replace(f'"{font_family}"', f'"pictex-{font_family}"')
         return svg
@@ -159,7 +163,7 @@ class VectorImageProcessor:
         elements = root.findall(".//{http://www.w3.org/2000/svg}text")
         for tf in typefaces:
             is_variable_font = utils.is_variable_font(tf.typeface)
-            font_family = self._get_svg_normalized_family_name(tf.typeface)
+            font_family = self._get_svg_normalized_family_name(tf)
             for text_elem in elements:
                 if text_elem.attrib.get("font-family", None) != font_family:
                     continue
