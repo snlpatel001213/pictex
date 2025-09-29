@@ -39,9 +39,7 @@ class TextPainter(Painter):
         paint.setImageFilter(filter)
 
     def _draw_text(self, canvas: skia.Canvas, paint: skia.Paint) -> None:
-        primary_font = self._font_manager.get_primary_font()
-        font_metrics = primary_font.getMetrics()
-        current_y = self._text_bounds.top() - font_metrics.fAscent
+        current_y = self._text_bounds.top()
         line_gap = self._style.line_height.get() * self._style.font_size.get()
         block_width = self._parent_bounds.width()
         outline_paint = self._build_outline_paint()
@@ -49,11 +47,13 @@ class TextPainter(Painter):
         for line in self._lines:
             draw_x_start = self._text_bounds.x() + get_line_x_position(line.width, block_width, self._style.text_align.get())
             current_x = draw_x_start
-            
             for run in line.runs:
-                canvas.drawString(run.text, current_x, current_y, run.font, paint)
+                blob = run.blob
+                if not blob:
+                    blob = skia.TextBlob.MakeFromShapedText(run.text, run.font)
+                canvas.drawTextBlob(blob, current_x, current_y, paint)
                 if outline_paint:
-                    canvas.drawString(run.text, current_x, current_y, run.font, outline_paint)
+                    canvas.drawTextBlob(blob, current_x, current_y, outline_paint)
                 current_x += run.width
             
             current_y += line_gap
