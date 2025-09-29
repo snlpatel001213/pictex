@@ -8,6 +8,7 @@ import pytest
 ASSETS_DIR = Path(__file__).parent / "assets"
 STATIC_FONT_PATH = str(ASSETS_DIR / "Lato-BoldItalic.ttf") # No emojies and japanese support
 VARIABLE_WGHT_FONT_PATH = str(ASSETS_DIR / "Oswald-VariableFont_wght.ttf")
+FONT_WITH_LIGATURES_PATH = str(ASSETS_DIR / "FiraCode-Medium.ttf") # Characters "->" and "=="
 JAPANESE_FONT_PATH = str(ASSETS_DIR / "NotoSansJP-Regular.ttf")
 IMAGE_PATH = str(ASSETS_DIR / "image.png")
 

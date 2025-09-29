@@ -73,7 +73,6 @@ class TextShaper:
         current_run_text = ""
 
         for grapheme in regex.findall(r"\X", line_text):
-            print("grapheme:", grapheme)
             if utils.is_grapheme_supported_for_typeface(grapheme, primary_font.getTypeface()):
                 current_run_text += grapheme
                 continue
