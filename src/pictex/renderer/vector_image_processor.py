@@ -20,6 +20,7 @@ class VectorImageProcessor:
         svg = bytes(data).decode("utf-8")
         fonts = self._get_used_fonts(root)
         typefaces = self._map_to_file_typefaces(fonts, embed_fonts)
+        svg = self._normalize_font_family_names(svg, typefaces)
         svg = self._fix_text_attributes(svg, typefaces)
         # svg = self._add_shadows(svg, root.computed_styles)
         svg = self._embed_fonts_in_svg(svg, typefaces, embed_fonts)
@@ -66,13 +67,7 @@ class VectorImageProcessor:
     
     def _embed_fonts_in_svg(self, svg: str, typefaces: list[TypefaceLoadingInfo], embed_fonts: bool) -> str:
         css = self._get_css_code_for_typefaces(typefaces, embed_fonts)
-        defs = f"""
-<defs>
-    <style type="text/css">
-        {css}
-    </style>
-</defs>
-            """
+        defs = f"""<defs><style type="text/css">{css}</style></defs>""" if css else ""
 
         svg_tag_pattern = re.compile(r"<svg[^>]*>")
         match = svg_tag_pattern.search(svg)
@@ -100,7 +95,7 @@ class VectorImageProcessor:
         
         css = ""
         for typeface in typefaces:
-            font_family = self._get_svg_family_name(typeface.typeface)
+            font_family = self._get_svg_normalized_family_name(typeface.typeface)
             filepath = typeface.filepath
             if not filepath:
                 continue
@@ -117,12 +112,10 @@ class VectorImageProcessor:
                 font_format = format_map.get(file_extension, "truetype")
                 src = f"data:font/{file_extension};base64,{encoded_font}') format('{font_format}"
 
-            css += f"""
-@font-face {{
+            css += f"""@font-face {{
     font-family: '{font_family}';
     src: url('{src}');
-}}
-            """
+}}"""
         
         return css
 
@@ -130,9 +123,21 @@ class VectorImageProcessor:
         family_names = list(map(lambda fn: fn[0], typeface.getFamilyNames()))
         return ", ".join(family_names)
     
-    def _add_prefix_to_font_families(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
+    def _get_svg_normalized_family_name(self, typeface: skia.Typeface) -> str:
+        font_family = self._get_svg_family_name(typeface)
+        return re.sub(r"\s+|,", "", font_family)
+    
+    def _normalize_font_family_names(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
         for typeface in typefaces:
             font_family = self._get_svg_family_name(typeface.typeface)
+            normalized_font_family = self._get_svg_normalized_family_name(typeface.typeface)
+            svg = svg.replace(f"'{font_family}'", f"'{normalized_font_family}'")
+            svg = svg.replace(f'"{font_family}"', f'"{normalized_font_family}"')
+        return svg
+    
+    def _add_prefix_to_font_families(self, svg: str, typefaces: list[TypefaceLoadingInfo]) -> str:
+        for typeface in typefaces:
+            font_family = self._get_svg_normalized_family_name(typeface.typeface)
             svg = svg.replace(f"'{font_family}'", f"'pictex-{font_family}'")
             svg = svg.replace(f'"{font_family}"', f'"pictex-{font_family}"')
         return svg
@@ -154,7 +159,7 @@ class VectorImageProcessor:
         elements = root.findall(".//{http://www.w3.org/2000/svg}text")
         for tf in typefaces:
             is_variable_font = utils.is_variable_font(tf.typeface)
-            font_family = self._get_svg_family_name(tf.typeface)
+            font_family = self._get_svg_normalized_family_name(tf.typeface)
             for text_elem in elements:
                 if text_elem.attrib.get("font-family", None) != font_family:
                     continue
