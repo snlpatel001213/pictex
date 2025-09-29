@@ -88,6 +88,70 @@ canvas.render("Variable Font").save("variable_font.png")
 
 `FontWeight` can be an enum member (e.g., `FontWeight.BOLD`) or an integer from 100 to 900.
 
+## Text Shaping
+
+`PicTex` includes advanced text shaping capabilities that improve text rendering quality through kerning, ligatures, and complex script support. This feature is automatically enabled and works behind the scenes to provide professional typography.
+
+### Kerning
+
+Kerning automatically adjusts the spacing between specific character pairs for better visual balance. For example, characters like "AV", "TY", or "Wo" will have optimized spacing.
+
+### Ligatures
+
+When using fonts that support ligatures, character sequences are automatically replaced with single, specially designed glyphs for improved readability.
+
+```python
+from pictex import Canvas, NamedColor
+
+(
+    Canvas()
+    .font_family("FiraCode-Medium.ttf")
+    .font_size(100)
+    .background_color(NamedColor.BEIGE)
+    .color(NamedColor.BLUE)
+    .render("-> != <= ==")
+    .save("ligature.png")
+)
+```
+
+![Ligature result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1759127040/docs-ligature_rwlxmg.png)
+
+### Complex Script Support
+
+Text shaping properly handles complex scripts like Arabic, where characters need to connect and change forms based on their position.
+
+```python
+from pictex import Canvas, NamedColor
+
+(
+    Canvas()
+    .font_size(100)
+    .background_color(NamedColor.BEIGE)
+    .color(NamedColor.DARKGREEN)
+    .render("كتاب")
+    .save("docs-arabic.png")
+)
+```
+
+![Script support result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1759127040/docs-arabic_yffazq.png)
+
+### Complex Emoji Sequences
+
+Multi-part emoji sequences (like 👩‍🔬) are rendered as single glyphs instead of separate emoji characters.
+
+```python
+from pictex import Canvas
+
+(
+    Canvas()
+    .font_size(100)
+    .render("👩‍🔬 🏳️‍🌈")
+    .save("docs-emoji.png")
+)
+```
+
+![Emoji sequences result](https://res.cloudinary.com/dlvnbnb9v/image/upload/v1759127041/docs-emoji_ekahio.png)
+
 ## Multi-line Text and Alignment
 
 `PicTex` fully supports multi-line text using newline characters (`\n`). Additionally, text can automatically wrap when placed in containers with fixed widths.

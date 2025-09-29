@@ -15,7 +15,7 @@ A powerful Python library for creating complex visual compositions and beautiful
 
 -   **Component-Based Layout**: Compose complex visuals by nesting powerful layout primitives like `Row`, `Column`, and `Image`.
 -   **Rich Styling**: Gradients, multiple shadows, borders with rounded corners, and text decorations.
--   **Advanced Typography**: Custom fonts, variable fonts, line height, and alignment.
+-   **Advanced Typography**: Custom fonts, variable fonts, line height, alignment, and text shaping with kerning and ligatures.
 -   **Automatic Font Fallback**: Seamlessly render emojis and multilingual text.
 -   **Flexible Output**: 
     -   **Raster**: Save as PNG/JPEG/WebP, or convert to NumPy/Pillow.
