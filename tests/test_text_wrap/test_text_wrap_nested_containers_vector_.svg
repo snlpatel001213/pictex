@@ -1,27 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="400" height="107">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="107"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="400" height="107" />
 	<rect fill="#FFC" width="400" height="107" />
 	<rect fill="#E6FFE6" transform="translate(10 10)" width="266" height="87" />
 	<rect fill="#E6E6FF" transform="translate(18 18)" width="200" height="71" />
 	<rect fill="#FFE6E6" transform="translate(26 26)" width="166" height="55" />
-	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 22, 24, 27, 32, 34, 40, 42, 48, 54, 58, 64, 66, 69, 75, 81, 87, 89, 94, 100, 106, 110, 116, 122, 127, " y="11.844, ">
+	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 22, 24, 27, 32, 34, 40, 42, 47.802002, 53.802002, 57.802002, 63.802002, 65.802002, 68.802002, 74.802002, 80.802002, 86.802002, 88.802002, 93.802002, 99.802002, 105.802, 109.802, 115.802, 121.802, 126.802, " y="11.844, ">
 			This is a very long sentence
 	</text>
-	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 4, 11, 17, 21, 23, 32, 35, 38, 41, 43, 49, 55, 64, 70, 76, 81, 85, 89, 95, 99, 105, 107, 111, 117, 123, " y="23.844, ">
+	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 4, 11, 17, 21, 23, 32, 35, 38, 41, 43, 49, 55, 64, 70, 76, 81, 85, 88.759995, 94.759995, 98.759995, 104.75999, 106.75999, 110.75999, 116.424, 122.424, " y="23.844, ">
 			that will demonstrate text
 	</text>
-	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 9, 13, 19, 25, 31, 34, 40, 46, 48, 54, 60, 67, 73, 79, 82, 88, 92, 94, 103, 110, 116, 122, 124, " y="35.844002, ">
+	<text transform="translate(34 34)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 9, 12.759995, 18.759995, 24.759995, 30.759995, 33.759995, 39.759995, 45.759995, 47.759995, 53.759995, 59.759995, 66.759995, 72.759995, 78.759995, 81.759995, 87.759995, 91.759995, 93.759995, 102.75999, 109.75999, 115.75999, 121.75999, 123.75999, " y="35.844002, ">
 			wrapping behavior when p
 	</text>
 </svg>

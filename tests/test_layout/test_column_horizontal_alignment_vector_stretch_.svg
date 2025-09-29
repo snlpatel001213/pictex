@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="412" height="237">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="412" height="237" />
 	<rect fill="#ECF0F1" width="300" height="237" />
 	<rect fill="#3498DB" width="300" height="79" />
@@ -12,7 +6,7 @@
 			Short
 	</text>
 	<rect fill="#E74C3C" transform="translate(0 79)" width="300" height="79" />
-	<text transform="translate(0 79)" font-size="50" font-family="DejaVu Sans" x="10, 38, 69, 100, 131, 162, 193, 224, 255, 286, 317, 348, 380, " y="56.411133, ">
+	<text transform="translate(0 79)" font-size="50" font-family="DejaVu Sans" x="10, 37.121094, 68.121094, 99.121094, 130.12109, 161.12109, 192.12109, 223.12109, 254.12109, 285.12109, 316.12109, 347.12109, 379.12109, " y="56.411133, ">
 			Loooooooooong
 	</text>
 	<rect fill="#2ECC71" transform="translate(0 158)" width="300" height="79" />

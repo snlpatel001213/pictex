@@ -1,51 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="529" height="95">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="529" height="95"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-@font-face {
+}@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="529" height="95" />
 	<rect fill="#E6F3FF" width="200" height="95" />
-	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 9, 13, 18, 22, 24, 27, 30, 36, 42, 44, 53, 56, 60, 67, 69, 78, 84, 90, 96, 102, 105, 107, 113, 117, 123, 129, 135, " y="11.844, ">
+	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 9, 13, 18, 22, 24, 27, 30, 36, 42, 44, 53, 56, 60, 67, 69, 78, 84, 90, 96, 102, 105, 107, 113, 116.75999, 122.75999, 128.75999, 134.75999, " y="11.844, ">
 			First line with manual break.
 	</text>
 	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 17, 23, 29, 35, 37, 40, 43, 49, 55, 57, 60, 65, 67, 70, 76, 82, 88, 94, 98, 100, 106, 112, 118, 120, 129, 132, 135, " y="23.844, ">
 			Second line is longer and will
 	</text>
-	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 21, 27, 33, 38, 42, 46, 52, 56, 62, 64, 73, 77, 83, 89, 95, 98, 104, 110, 112, 118, 124, 131, 137, 143, 146, 152, 156, " y="35.844002, ">
+	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 21, 27, 33, 38, 42, 45.759995, 51.759995, 55.759995, 61.759995, 63.759995, 72.759995, 76.519989, 82.519989, 88.519989, 94.519989, 97.519989, 103.51999, 109.51999, 111.51999, 117.51999, 123.51999, 130.51999, 136.51999, 142.51999, 145.51999, 151.51999, 154.51799, " y="35.844002, ">
 			demonstrate wrapping behavior.
 	</text>
-	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 21, 27, 29, 32, 35, 41, 47, 49, 52, 57, 59, 64, 71, 77, 81, 85, " y="47.844002, ">
+	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 20.759995, 26.759995, 28.759995, 31.759995, 34.759995, 40.759995, 46.759995, 48.759995, 51.759995, 56.759995, 58.759995, 63.759995, 70.759995, 76.759995, 80.759995, 84.759995, " y="47.844002, ">
 			Third line is short.
 	</text>
-	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 18, 22, 26, 33, 35, 38, 41, 47, 53, 55, 60, 66, 72, 76, 82, 85, 91, 96, 98, 107, 113, 117, 123, 125, 129, 135, 141, 145, 147, 151, " y="59.844002, ">
+	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 5.6159973, 11.615997, 17.615997, 21.615997, 25.615997, 32.615997, 34.615997, 37.615997, 40.615997, 46.615997, 52.615997, 54.615997, 59.615997, 65.615997, 71.615997, 75.615997, 81.615997, 84.615997, 90.615997, 95.615997, 97.615997, 106.616, 112.616, 116.37599, 122.37599, 124.37599, 128.37599, 134.03999, 140.03999, 144.03999, 146.03999, 150.03999, " y="59.844002, ">
 			Fourth line contains more text to
 	</text>
-	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 5, 12, 18, 27, 29, 38, 42, 48, 54, 60, 63, 69, 75, " y="71.844002, ">
+	<text transform="translate(10 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 5, 12, 18, 27, 29, 38, 41.759995, 47.759995, 53.759995, 59.759995, 62.759995, 68.759995, 74.759995, " y="71.844002, ">
 			show wrapping.
 	</text>
 	<rect fill="#FFE6F3" transform="translate(220 0)" width="200" height="71" />
-	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 9, 13, 18, 22, 24, 27, 30, 36, 42, 44, 53, 56, 60, 67, 69, 78, 84, 90, 96, 102, 105, 107, 113, 117, 123, 129, 135, " y="11.844, ">
+	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 9, 13, 18, 22, 24, 27, 30, 36, 42, 44, 53, 56, 60, 67, 69, 78, 84, 90, 96, 102, 105, 107, 113, 116.75999, 122.75999, 128.75999, 134.75999, " y="11.844, ">
 			First line with manual break.
 	</text>
-	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 17, 23, 29, 35, 37, 40, 43, 49, 55, 57, 60, 65, 67, 70, 76, 82, 88, 94, 98, 100, 106, 112, 118, 120, 129, 132, 135, 138, 140, 146, 152, 161, 167, 173, 178, 182, 186, 192, 196, 202, 204, 213, 217, 223, 229, 235, 238, 244, 250, 252, 258, 264, 271, 277, 283, 286, 292, 296, " y="23.844, ">
+	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 17, 23, 29, 35, 37, 40, 43, 49, 55, 57, 60, 65, 67, 70, 76, 82, 88, 94, 98, 100, 106, 112, 118, 120, 129, 132, 135, 138, 140, 146, 152, 161, 167, 173, 178, 182, 185.75999, 191.75999, 195.75999, 201.75999, 203.75999, 212.75999, 216.51999, 222.51999, 228.51999, 234.51999, 237.51999, 243.51999, 249.51999, 251.51999, 257.51999, 263.51999, 270.51999, 276.51999, 282.51999, 285.51999, 291.51999, 294.51801, " y="23.844, ">
 			Second line is longer and will demonstrate wrapping behavior.
 	</text>
-	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 21, 27, 29, 32, 35, 41, 47, 49, 52, 57, 59, 64, 71, 77, 81, 85, " y="35.844002, ">
+	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 20.759995, 26.759995, 28.759995, 31.759995, 34.759995, 40.759995, 46.759995, 48.759995, 51.759995, 56.759995, 58.759995, 63.759995, 70.759995, 76.759995, 80.759995, 84.759995, " y="35.844002, ">
 			Third line is short.
 	</text>
-	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 6, 12, 18, 22, 26, 33, 35, 38, 41, 47, 53, 55, 60, 66, 72, 76, 82, 85, 91, 96, 98, 107, 113, 117, 123, 125, 129, 135, 141, 145, 147, 151, 157, 159, 164, 171, 177, 186, 188, 197, 201, 207, 213, 219, 222, 228, 234, " y="47.844002, ">
+	<text transform="translate(230 10)" font-size="12" font-style="italic" font-family="pictex-Lato" x="0, 5.6159973, 11.615997, 17.615997, 21.615997, 25.615997, 32.615997, 34.615997, 37.615997, 40.615997, 46.615997, 52.615997, 54.615997, 59.615997, 65.615997, 71.615997, 75.615997, 81.615997, 84.615997, 90.615997, 95.615997, 97.615997, 106.616, 112.616, 116.37599, 122.37599, 124.37599, 128.37599, 134.03999, 140.03999, 144.03999, 146.03999, 150.03999, 156.03999, 158.03999, 163.03999, 170.03999, 176.03999, 185.03999, 187.03999, 196.03999, 199.79999, 205.79999, 211.79999, 217.79999, 220.79999, 226.79999, 232.79999, " y="47.844002, ">
 			Fourth line contains more text to show wrapping.
 	</text>
 </svg>

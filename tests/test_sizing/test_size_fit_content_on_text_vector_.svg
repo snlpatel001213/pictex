@@ -1,13 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="79">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="300" height="79" />
 	<rect fill="#2ECC71" width="300" height="79" />
-	<text font-size="50" font-family="DejaVu Sans" x="10, 39, 53, 73, 89, 124, 155, 187, 207, 238, 270, " y="56.411133, ">
+	<text font-size="50" font-family="DejaVu Sans" x="10, 35.362305, 49.362305, 69.362305, 85.362305, 120.3623, 151.3623, 183.3623, 203.3623, 234.3623, 266.3623, " y="56.411133, ">
 			Fit Content
 	</text>
 </svg>

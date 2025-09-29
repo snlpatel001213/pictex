@@ -1,25 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="350" height="95">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="350" height="95"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="350" height="95" />
 	<rect fill="#DDD" width="350" height="95" />
 	<rect fill="#F5F5DC" transform="translate(10 10)" width="312" height="75" />
-	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 16, 24, 28, 34, 37, 41, 47, 50, 57, 60, 67, 74, 79, 86, 89, 93, 100, 108, 115, 118, 124, 131, 139, 144, 151, 159, 165, 172, 175, 180, 188, 195, 200, 203, 213, 217, 221, 225, 228, 236, 243, 254, 261, 269, 275, 280, 285, 292, 297, " y="21.818001, ">
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 16, 24, 28, 34, 37, 41, 47, 50, 57, 60, 66.768997, 73.768997, 78.768997, 85.768997, 88.768997, 92.768997, 99.768997, 107.769, 114.769, 117.769, 123.769, 130.769, 138.769, 143.769, 150.769, 158.769, 164.769, 171.769, 174.769, 179.769, 187.769, 194.769, 199.769, 202.769, 212.769, 216.769, 220.769, 224.769, 227.769, 235.769, 242.769, 253.769, 260.76898, 268.76898, 274.76898, 279.76898, 284.48898, 291.48898, 296.48898, " y="21.818001, ">
 			This is a very long sentence that will demonstrate
 	</text>
-	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 13, 20, 27, 32, 35, 45, 50, 57, 64, 71, 75, 83, 90, 93, 101, 108, 116, 123, 130, 134, 141, 146, 149, 159, 167, 174, 182, 185, 192, 196, 203, 209, 216, 224, 227, 231, 239, 245, 249, 257, " y="35.818001, ">
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 13, 19.608002, 26.608002, 31.608002, 34.608002, 44.608002, 49.328003, 56.328003, 63.328003, 70.328003, 74.328003, 82.328003, 89.328003, 92.328003, 100.328, 107.328, 115.328, 122.328, 129.328, 133.328, 140.328, 145.328, 148.328, 158.328, 166.328, 173.328, 181.328, 184.328, 191.328, 195.328, 202.328, 208.328, 215.328, 223.328, 226.328, 230.328, 238.328, 244.328, 248.328, 256.328, " y="35.818001, ">
 			text wrapping behavior when placed inside
 	</text>
-	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 14, 21, 29, 34, 41, 45, 53, 60, 65, 71, 74, 84, 88, 93, 101, 104, 111, 118, 123, 127, 134, 142, 148, 151, 161, 165, 173, 178, 186, 189, 195, 202, 210, 216, 221, 226, 233, 237, 245, 250, 256, 259, 266, 274, " y="49.818001, ">
+	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 14, 21, 29, 34, 41, 45, 53, 60, 65, 71, 74, 84, 88, 93, 101, 104, 110.769, 117.769, 122.769, 126.769, 133.769, 141.769, 147.769, 150.769, 160.769, 164.769, 172.769, 177.769, 185.769, 188.769, 194.769, 201.769, 209.769, 215.769, 220.769, 225.489, 232.489, 236.489, 244.489, 249.489, 255.489, 258.48901, 265.48901, 273.48901, " y="49.818001, ">
 			containers with various width constraints and
 	</text>
 	<text transform="translate(10 10)" font-size="14" font-style="italic" font-family="pictex-Lato" x="8, 14, 21, 26, 31, 35, 43, 50, 56, " y="63.818001, ">

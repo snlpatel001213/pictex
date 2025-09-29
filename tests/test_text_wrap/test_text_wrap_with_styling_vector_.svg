@@ -1,25 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="280" height="141">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="141"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="280" height="141" />
 	<rect fill="#BDC3C7" width="280" height="141" />
 	<rect fill="#ECF0F1" transform="translate(15 15)" width="237" height="111" />
-	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="12, 21, 30, 34, 40, 43, 47, 53, 56, 64, 67, 75, 83, 89, 97, 100, 104, 112, 121, 129, 132, 138, 146, 155, 161, 169, 178, 185, 193, 196, 202, 211, 219, " y="27.792, ">
+	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="12, 21, 30, 34, 40, 43, 47, 53, 56, 64, 67, 74.735992, 82.735992, 88.735992, 96.735992, 99.735992, 103.73599, 111.73599, 120.73599, 128.73599, 131.73599, 137.73599, 145.73599, 154.73599, 160.73599, 168.73599, 177.73599, 184.73599, 192.73599, 195.73599, 201.73599, 210.73599, 218.73599, " y="27.792, ">
 			This is a very long sentence that
 	</text>
-	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="13, 25, 29, 33, 37, 40, 49, 57, 70, 78, 87, 93, 99, 105, 113, 119, 127, 130, 136, 144, 152, 158, 161, 173, 179, 187, 195, 203, 207, 216, " y="50.192001, ">
+	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="13, 25, 29, 33, 37, 40, 49, 57, 70, 78, 87, 93, 99, 104.67999, 112.67999, 118.67999, 126.67999, 129.67999, 135.67999, 143.23199, 151.23199, 157.23199, 160.23199, 172.23199, 177.91199, 185.91199, 193.91199, 201.91199, 205.91199, 214.91199, " y="50.192001, ">
 			will demonstrate text wrapping
 	</text>
-	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="23, 32, 40, 49, 57, 65, 69, 77, 83, 86, 98, 107, 115, 124, 127, 135, 139, 147, 154, 162, 171, 174, 178, 187, 193, 197, 206, " y="72.592003, ">
+	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="23, 32, 40, 49, 57, 65, 69, 77, 83, 86, 98, 107, 115, 124, 127, 135, 139, 147, 154, 162, 171, 174, 178, 187, 193, 197, 206, " y="72.591995, ">
 			behavior when placed inside
 	</text>
 	<text fill="#2C3E50" transform="translate(15 15)" font-size="16" font-style="italic" font-family="pictex-Lato" x="93, 100, 108, 117, 123, 131, 135, " y="94.991997, ">

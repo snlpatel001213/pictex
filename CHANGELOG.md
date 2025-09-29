@@ -7,13 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
-### Fixed
-- Fixed SVG rendering with custom font files being embedded. It was not working because a wrong SVG tag was being used.
-
 ### Added
 
 - Added comprehensive type annotations and mypy static type checking integration
 - **NamedColor Enum**: Exposed `NamedColor` enum class to improve developer experience when using colors. The enum provides easy access to all supported named colors with autocompletion and type safety.
+- **Text Shaping Support**: Added advanced text shaping capabilities including kerning, ligatures, and proper complex script rendering (Arabic, emoji sequences). Text now renders with correct character connections and spacing adjustments.
+
+### Fixed
+
+- Fixed SVG rendering with custom font files being embedded. It was not working because a wrong SVG tag was being used.
+- Fixed SVG font family normalization by removing spaces and commas from font identifiers to prevent rendering issues.
+- Fixed text wrapping when no width constraint is specified, avoiding unnecessary wrap calculations.
 
 ### Changed
 

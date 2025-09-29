@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="665" height="266">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="665" height="266" />
 	<rect fill="#ECF0F1" width="400" height="150" />
 	<defs>
@@ -17,7 +11,7 @@
 		<use transform="translate(10 10)" ns1:href="#img_0" />
 	</g>
 	<rect fill="#27AE60" transform="translate(130 10)" width="260" height="59" />
-	<text transform="translate(130 10)" font-size="50" font-family="DejaVu Sans" x="0, 31, 63, 77, 103, 119, 139, 170, 200, 220, 236, 254, 268, 282, 296, 322, 338, 358, 390, 421, 437, 458, 489, 515, " y="46.411133, ">
-			This text fills the rest
+	<text transform="translate(130 10)" font-size="50" font-family="DejaVu Sans" x="0, 31, 63, 77, 103, 119, 139, 169.12109, 199.12109, 219.12109, 235.12109, 267.12109, 281.12109, 295.12109, 321.12109, 337.12109, 357.12109, 389.12109, 420.12109, 436.12109, 456.02246, 487.02246, 513.02246, " y="46.411133, ">
+			This text ﬁlls the rest
 	</text>
 </svg>

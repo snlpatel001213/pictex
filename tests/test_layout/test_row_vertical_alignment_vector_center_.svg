@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="122" height="150">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="122" height="150" />
 	<rect fill="#ECF0F1" width="122" height="150" />
 	<rect fill="#3498DB" transform="translate(0 53)" width="34" height="44" />

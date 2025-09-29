@@ -128,7 +128,7 @@ class TextNode(Node):
     
     def _set_width_constraint(self, width_constraint: Optional[int]) -> None:      
         if width_constraint is None:
-            self._text_wrap_width = self.content_width
+            self._text_wrap_width = None
             return
         
         wrap_width = width_constraint

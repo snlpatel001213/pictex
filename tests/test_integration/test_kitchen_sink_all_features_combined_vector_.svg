@@ -1,20 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="565" height="536">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="565" height="536"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Oswald';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
-}
-            
-@font-face {
+}@font-face {
     font-family: 'pictex-Oswald';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Oswald-VariableFont_wght.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="565" height="536" />
 	<defs>
 		<linearGradient id="gradient_0" gradientUnits="userSpaceOnUse" x1="25" y1="268" x2="540" y2="268">
@@ -49,10 +39,10 @@
 		</linearGradient>
 	</defs>
 	<path fill="none" stroke="url(#gradient_3)" stroke-width="4" stroke-miterlimit="4" transform="translate(75 65)" d="M0 67.679993L415 67.679993" />
-	<text fill="yellow" transform="translate(213 204)" font-size="80" font-family="pictex-Oswald" x="0, 33, 67, 97, 122, " y="95.439995, ">
+	<text fill="yellow" transform="translate(213 204)" font-size="80" font-family="pictex-Oswald" x="0, 27.960007, 61.960007, 91.960007, 116.96001, " y="95.439995, ">
 			Test!
 	</text>
-	<text fill="none" stroke="black" stroke-width="3" stroke-miterlimit="4" transform="translate(213 204)" font-size="80" font-family="pictex-Oswald" x="0, 33, 67, 97, 122, " y="95.439995, ">
+	<text fill="none" stroke="black" stroke-width="3" stroke-miterlimit="4" transform="translate(213 204)" font-size="80" font-family="pictex-Oswald" x="0, 27.960007, 61.960007, 91.960007, 116.96001, " y="95.439995, ">
 			Test!
 	</text>
 	<path fill="none" stroke="#FFD700" stroke-width="4" stroke-miterlimit="4" transform="translate(213 204)" d="M0 103.43999L139 103.43999" />

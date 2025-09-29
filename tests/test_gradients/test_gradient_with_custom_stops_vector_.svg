@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="446" height="178">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="446" height="178" />
 	<rect fill="#222" width="446" height="178" />
 	<defs>
@@ -15,7 +9,7 @@
 			<stop offset="1" stop-color="#904E95" />
 		</linearGradient>
 	</defs>
-	<text fill="url(#gradient_0)" transform="translate(20 20)" font-size="120" font-family="Arial" x="0, 80, 153, 246, 326, " y="108.63281, ">
+	<text fill="url(#gradient_0)" transform="translate(20 20)" font-size="120" font-family="Arial" x="0, 80, 150.83203, 243.83203, 323.83203, " y="108.63281, ">
 			STOPS
 	</text>
 </svg>

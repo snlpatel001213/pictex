@@ -3,7 +3,9 @@ from typing import List, Optional
 from .typeface_loader import TypefaceLoader
 from .font_manager import FontManager
 from ..models import Style, Line, TextRun
+from .. import utils
 import re
+import regex
 
 class TextShaper:
     def __init__(self, style: Style, font_manager: FontManager):
@@ -57,7 +59,10 @@ class TextShaper:
     def _create_line(self, runs: list[TextRun], font_height: float) -> Line:
         line_width: float = 0
         for run in runs:
-            run.width = run.font.measureText(run.text)
+            run.blob = skia.TextBlob.MakeFromShapedText(run.text, run.font)
+            # TODO: it's failing with the emoji '👨‍👩‍👧‍👦' in the system font from windows for emojis
+            glyph_ids = [gid for run in list(run.blob) for gid in run.fGlyphIndices]
+            run.width = sum(run.font.getWidths(glyph_ids))
             line_width += run.width
 
         return Line(runs=runs, width=line_width, height=font_height, bounds=skia.Rect.MakeWH(line_width, font_height))
@@ -67,9 +72,9 @@ class TextShaper:
         line_runs: list[TextRun] = []
         current_run_text = ""
 
-        for char in line_text:
-            if self._is_glyph_supported_for_typeface(char, primary_font.getTypeface()):
-                current_run_text += char
+        for grapheme in regex.findall(r"\X", line_text):
+            if utils.is_grapheme_supported_for_typeface(grapheme, primary_font.getTypeface()):
+                current_run_text += grapheme
                 continue
 
             if current_run_text:
@@ -77,13 +82,13 @@ class TextShaper:
                 line_runs.append(run)
                 current_run_text = ""
 
-            fallback_font = self._get_fallback_font_for_glyph(char, primary_font)
+            fallback_font = self._get_fallback_font_for_glyph(grapheme, primary_font)
             is_same_font_than_last_run = len(line_runs) > 0 and line_runs[-1].font.getTypeface() == fallback_font.getTypeface()
             if is_same_font_than_last_run:
                 # we join contiguous runs with same font
-                line_runs[-1] = TextRun(line_runs[-1].text + char, fallback_font)
+                line_runs[-1] = TextRun(line_runs[-1].text + grapheme, fallback_font)
             else:
-                line_runs.append(TextRun(char, fallback_font))
+                line_runs.append(TextRun(grapheme, fallback_font))
         
         # Add the last run
         if current_run_text:
@@ -92,21 +97,21 @@ class TextShaper:
         
         return line_runs
 
-    def _get_fallback_font_for_glyph(self, glyph: str, primary_font: skia.Font) -> skia.Font:
+    def _get_fallback_font_for_glyph(self, grapheme: str, primary_font: skia.Font) -> skia.Font:
         fallback_typefaces = self._font_manager.get_fallback_font_typefaces()
         for typeface in fallback_typefaces:
-            if self._is_glyph_supported_for_typeface(glyph, typeface):
+            if utils.is_grapheme_supported_for_typeface(grapheme, typeface):
                 fallback_font = primary_font.makeWithSize(primary_font.getSize())
                 fallback_font.setTypeface(typeface)
                 return fallback_font
 
-        # if we don't find a font supporting the glyph, we try to find one in the system
+        # if we don't find a font supporting the grapheme, we try to find one in the system
         font_style = skia.FontStyle(
             weight=self._style.font_weight.get(),
             width=skia.FontStyle.kNormal_Width,
             slant=self._style.font_style.get().to_skia_slant()
         )
-        system_typeface = TypefaceLoader.load_for_glyph(glyph, font_style)
+        system_typeface = TypefaceLoader.load_for_grapheme(grapheme, font_style)
         if system_typeface:
             fallback_font = primary_font.makeWithSize(primary_font.getSize())
             fallback_font.setTypeface(system_typeface)
@@ -114,9 +119,6 @@ class TextShaper:
 
         # if we don't find any font in the system supporting the glyph, we just use the primary font
         return primary_font
-
-    def _is_glyph_supported_for_typeface(self, glyph: str, typeface: skia.Typeface) -> bool:
-        return typeface.unicharToGlyph(ord(glyph)) != 0
 
     def _wrap_line_to_width(self, text: str, max_width: float) -> List[str]:
         """
@@ -134,6 +136,8 @@ class TextShaper:
         current_width = 0
 
         for token in tokens:
+            # This is an approximate width measurement, since it is using the primary font
+            # some characters may be rendered with a fallback font, leading to a different final width
             token_width = primary_font.measureText(token)
 
             # If it's the first token, add it regardless
@@ -166,31 +170,4 @@ class TextShaper:
         
         return wrapped_lines if wrapped_lines else ['']
     
-    def _measure_word_width(self, word: str) -> float:
-        """
-        Measures the width of a word, accounting for font fallbacks.
-        """
-        primary_font = self._font_manager.get_primary_font()
-        total_width = 0
-        current_run_text = ""
-        
-        for char in word:
-            if self._is_glyph_supported_for_typeface(char, primary_font.getTypeface()):
-                current_run_text += char
-                continue
-            
-            # Measure current run with primary font
-            if current_run_text:
-                total_width += primary_font.measureText(current_run_text)
-                current_run_text = ""
-            
-            # Measure fallback character
-            fallback_font = self._get_fallback_font_for_glyph(char, primary_font)
-            total_width += fallback_font.measureText(char)
-        
-        # Measure remaining text with primary font
-        if current_run_text:
-            total_width += primary_font.measureText(current_run_text)
-        
-        return total_width
     

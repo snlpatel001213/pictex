@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="200">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="300" height="200" />
 	<rect fill="#BDC3C7" width="300" height="200" />
 	<rect fill="#1ABC9C" transform="translate(10 10)" width="59" height="59" />
@@ -27,8 +21,8 @@
 	<text transform="translate(65 70.5)" font-size="50" font-family="DejaVu Sans" x="0, 35, 66, 98, 118, 149, " y="46.411133, ">
 			Center
 	</text>
-	<rect fill="#F1C40F" transform="translate(60 60)" width="152" height="59" />
-	<text transform="translate(60 60)" font-size="50" font-family="DejaVu Sans" x="0, 39, 57, 75, 101, 132, " y="46.411133, ">
-			Offset
+	<rect fill="#F1C40F" transform="translate(60 60)" width="150" height="59" />
+	<text transform="translate(60 60)" font-size="50" font-family="DejaVu Sans" x="0, 39, 73, 99, 130, " y="46.411133, ">
+			Oﬀset
 	</text>
 </svg>

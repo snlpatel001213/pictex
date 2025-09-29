@@ -1,37 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="300" height="144">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="144"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="300" height="144" />
 	<rect fill="#F5F5F5" width="300" height="144" />
 	<rect fill="#F0FFFF" transform="translate(15 15)" width="162" height="114" />
-	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 22, 25, 28, 33, 36, 43, 46, 52, 58, 63, 69, 72, 75, 82, 89, " y="12.830999, ">
+	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 7, 14, 17, 22, 25, 28, 33, 36, 43, 46, 51.785507, 57.785507, 62.785507, 68.785507, 71.785507, 74.785507, 81.785507, 88.785507, " y="12.830999, ">
 			This is a very long
 	</text>
 	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 5, 11, 18, 23, 29, 36, 42, 48, 51, 56, 63, 70, 75, 78, 88, 91, 94, " y="25.830999, ">
 			sentence that will
 	</text>
-	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 7, 13, 23, 30, 37, 42, 47, 52, 59, 64, 70, 73, 78, 84, 91, " y="38.831001, ">
+	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 7, 13, 23, 30, 37, 42, 47, 51.740005, 58.740005, 63.740005, 69.740005, 72.740005, 77.740005, 83.376007, 90.376007, " y="38.831001, ">
 			demonstrate text
 	</text>
-	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 10, 15, 22, 29, 36, 39, 46, 52, 55, 62, 68, 75, 82, 88, 91, 98, 103, 106, 116, 123, 129, " y="51.831001, ">
+	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 10, 14.740005, 21.740005, 28.740005, 35.740005, 38.740005, 45.740005, 51.740005, 54.740005, 61.740005, 67.740005, 74.740005, 81.740005, 87.740005, 90.740005, 97.740005, 102.74001, 105.74001, 115.74001, 122.74001, 128.74001, " y="51.831001, ">
 			wrapping behavior when
 	</text>
 	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 7, 10, 17, 23, 29, 36, 39, 42, 49, 54, 57, 64, 70, 73, 79, 86, 93, 98, 105, 108, 115, 121, 126, " y="64.831001, ">
 			placed inside containers
 	</text>
-	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 10, 13, 18, 25, 28, 34, 41, 46, 49, 56, 63, 68, 71, 81, 84, 91, 96, " y="77.831001, ">
+	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 10, 13, 18, 25, 28, 33.785507, 40.785507, 45.785507, 48.785507, 55.785507, 62.785507, 67.785507, 70.785507, 80.785507, 83.785507, 90.785507, 95.785507, " y="77.831001, ">
 			with various width
 	</text>
-	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 6, 13, 20, 25, 30, 35, 42, 45, 52, 57, 62, 65, 72, 79, 86, 89, 94, 100, 105, 110, 113, 120, 126, 131, " y="90.831001, ">
+	<text transform="translate(25 25)" font-size="13" font-style="italic" font-family="pictex-Lato" x="0, 6, 13, 20, 25, 30, 34.740005, 41.740005, 44.740005, 51.740005, 56.740005, 61.740005, 64.740005, 71.740005, 78.740005, 85.740005, 88.740005, 93.740005, 99.740005, 104.74001, 109.74001, 112.74001, 119.74001, 125.74001, 130.74001, " y="90.831001, ">
 			constraints and settings.
 	</text>
 </svg>

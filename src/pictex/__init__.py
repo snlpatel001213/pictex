@@ -2,6 +2,9 @@
 pictex: A Python library for creating complex visual compositions and beautifully styled images.
 """
 
+from . import __skia_init
+__skia_init.prime_skia_icu_engine()
+
 from .builders import Canvas, Text, Row, Column, Image, Element
 from .models.public import *
 from .bitmap_image import BitmapImage

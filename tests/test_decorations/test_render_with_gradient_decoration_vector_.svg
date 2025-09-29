@@ -1,17 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="451" height="96">
-<defs>
-    <style type="text/css">
-        
-@font-face {
+<svg xmlns="http://www.w3.org/2000/svg" width="451" height="96"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
     src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
-}
-            
-    </style>
-</defs>
-            
+}</style></defs>
 	<rect fill-opacity="0" width="451" height="96" />
-	<text font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 53, 82, 123, 166, 187, 225, 268, 296, 311, 349, 370, 413, " y="78.959999, ">
+	<text font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 53, 80.399994, 121.39999, 164.39999, 185.39999, 223.39999, 266.39999, 294.39999, 309.39999, 347.39999, 368.39999, 411.39999, " y="78.959999, ">
 			Gradient Line
 	</text>
 	<defs>

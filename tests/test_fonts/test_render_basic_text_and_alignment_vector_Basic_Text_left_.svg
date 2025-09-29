@@ -1,12 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="234" height="58">
-<defs>
-    <style type="text/css">
-        
-    </style>
-</defs>
-            
 	<rect fill-opacity="0" width="234" height="58" />
-	<text font-size="50" font-family="Arial" x="0, 33, 61, 86, 97, 122, 136, 167, 195, 220, " y="45.263672, ">
+	<text font-size="50" font-family="Arial" x="0, 33, 61, 86, 97, 122, 135.09668, 160.55469, 188.55469, 213.55469, " y="45.263672, ">
 			Basic Text
 	</text>
 </svg>

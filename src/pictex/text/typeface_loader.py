@@ -1,5 +1,6 @@
 from typing import Optional
 from ..models import TypefaceLoadingInfo, TypefaceSource
+from .. import utils
 import skia
 
 class TypefaceLoader:
@@ -24,14 +25,18 @@ class TypefaceLoader:
         return TypefaceLoader._save(skia.Typeface(family, style), TypefaceSource.SYSTEM)
 
     @staticmethod
-    def load_for_glyph(glyph: str, style: skia.FontStyle) -> Optional[skia.Typeface]:
-        system_typeface = TypefaceLoader._get_font_manager().matchFamilyStyleCharacter(
-            "",
-            style,
-            [],
-            ord(glyph)
-        )
-        return TypefaceLoader._save(system_typeface, TypefaceSource.SYSTEM)
+    def load_for_grapheme(grapheme: str, style: skia.FontStyle) -> Optional[skia.Typeface]:
+        for cp in grapheme:
+            system_typeface = TypefaceLoader._get_font_manager().matchFamilyStyleCharacter(
+                "",
+                style,
+                [],
+                ord(cp)
+            )
+            if utils.is_grapheme_supported_for_typeface(grapheme, system_typeface):
+                return TypefaceLoader._save(system_typeface, TypefaceSource.SYSTEM)
+        
+        return None
 
     @staticmethod
     def clone_with_arguments(typeface: skia.Typeface, arguments: skia.FontArguments) -> skia.Typeface:
