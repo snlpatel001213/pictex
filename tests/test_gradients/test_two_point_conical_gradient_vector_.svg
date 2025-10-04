@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="594" height="198">
+	<rect fill-opacity="0" width="594" height="198" />
+	<defs>
+		<radialGradient id="gradient_0" gradientUnits="userSpaceOnUse" fx="297" fy="99" fr="198" cx="297" cy="0" r="0">
+			<stop offset="0" stop-color="yellow" />
+			<stop offset="1" stop-color="blue" />
+		</radialGradient>
+	</defs>
+	<rect fill="url(#gradient_0)" width="594" height="198" />
+	<text fill="white" transform="translate(30 30)" font-size="120" font-family="Arial" x="0, 87, 180, 267, 300, 387, 467, " y="108.63281, ">
+			CONICAL
+	</text>
+</svg>

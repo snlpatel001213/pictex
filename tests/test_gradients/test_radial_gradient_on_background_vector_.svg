@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="494" height="198">
+	<rect fill-opacity="0" width="494" height="198" />
+	<defs>
+		<radialGradient id="gradient_0" gradientUnits="userSpaceOnUse" cx="247" cy="99" r="173">
+			<stop offset="0" stop-color="yellow" />
+			<stop offset="0.5" stop-color="#FFA500" />
+			<stop offset="1" stop-color="purple" />
+		</radialGradient>
+	</defs>
+	<rect fill="url(#gradient_0)" width="494" height="198" />
+	<text fill="white" transform="translate(30 30)" font-size="120" font-family="Arial" x="0, 87, 167, 254, 287, 367, " y="108.63281, ">
+			RADIAL
+	</text>
+</svg>
