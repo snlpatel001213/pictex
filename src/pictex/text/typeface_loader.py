@@ -33,7 +33,7 @@ class TypefaceLoader:
                 [],
                 ord(cp)
             )
-            if utils.is_grapheme_supported_for_typeface(grapheme, system_typeface):
+            if system_typeface and utils.is_grapheme_supported_for_typeface(grapheme, system_typeface):
                 return TypefaceLoader._save(system_typeface, TypefaceSource.SYSTEM)
         
         return None
