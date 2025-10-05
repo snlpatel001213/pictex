@@ -98,8 +98,8 @@ vector_image.save("portable_text.svg")
 ```
 
 #### `embed_font=False`
--   **What it does:** The SVG will still contain a `@font-face` rule, but instead of embedding the font data, it will reference the font file using a relative path (e.g., `src: url('path/to/font.ttf')`).
--   **Result:** The SVG file itself is very small. However, for it to render correctly, the font file **must be distributed alongside the SVG** and kept in the same relative path. This is useful for web projects where you manage fonts and SVGs as separate assets.
+-   **What it does:** The SVG will still contain a `@font-face` rule, but instead of embedding the font data, it will reference the font file using only its filename (e.g., `src: url('font.ttf')`).
+-   **Result:** The SVG file itself is very small. However, for it to render correctly, the font file **must be distributed alongside the SVG in the same directory**. This is useful for web projects where you manage fonts and SVGs as separate assets.
 -   **Trade-off:** The SVG is no longer self-contained.
 
 ```python
@@ -121,5 +121,5 @@ This applies when you specify a font by name or when `PicTex` uses a system font
 
 | Font Source          | `embed_font=True` (Default)                                   | `embed_font=False`                                         |
 | -------------------- | ------------------------------------------------------------- | ---------------------------------------------------------- |
-| **Font from File**   | **Fully Portable SVG.** Font is embedded (Base64).            | **Linked SVG.** Relies on external font file at a relative path. |
+| **Font from File**   | **Fully Portable SVG.** Font is embedded (Base64).            | **Linked SVG.** Relies on external font file (filename only, same directory). |
 | **System Font**      | **System-Dependent SVG.** Font is referenced by name. (Warning issued) | **System-Dependent SVG.** Font is referenced by name.      |

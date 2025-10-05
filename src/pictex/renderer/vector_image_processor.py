@@ -105,12 +105,14 @@ class VectorImageProcessor:
             except IOError as e:
                 continue
             
-            src = os.path.normpath(filepath).replace("\\", "/")
             if embed_fonts:
                 encoded_font = base64.b64encode(font_data).decode("utf-8")
                 file_extension = filepath.lower().split('.')[-1]
                 font_format = format_map.get(file_extension, "truetype")
                 src = f"data:font/{file_extension};base64,{encoded_font}') format('{font_format}"
+            else:
+                # Use only the filename for relative path (assumes font is in same directory as SVG)
+                src = os.path.basename(filepath)
 
             css += f"""@font-face {{
     font-family: '{font_family}';

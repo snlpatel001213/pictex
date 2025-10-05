@@ -29,19 +29,7 @@ def check_images_match(image_regression, image: Image):
 
 def check_svgs_match(file_regression, vector_image: VectorImage):
     """Helper function to check SVG output against a baseline file."""
-    import re
-
-    # Normalize absolute paths to relative paths for cross-platform consistency
-    # Replaces paths like /home/runner/work/pictex/pictex/tests/assets/...
-    # or /app/tests/assets/... with tests/assets/...
-    svg_content = vector_image.svg
-    svg_content = re.sub(
-        r"src: url\('([^']*)/tests/assets/([^']+)'\)",
-        r"src: url('tests/assets/\2')",
-        svg_content
-    )
-
-    file_regression.check(svg_content, extension=".svg", encoding="utf-8")
+    file_regression.check(vector_image.svg, extension=".svg", encoding="utf-8")
 
 
 @pytest.fixture(params=["raster", "vector"])

@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `SweepGradient`: Conical gradients sweeping around a center point
   - `TwoPointConicalGradient`: Gradients transitioning between two circles with different radii
 
+### Changed
+- **SVG Font References**: When using `embed_font=False` in `render_as_svg()`, font file references now use only the filename (e.g., `'font.ttf'`) instead of absolute paths. This improves portability and assumes fonts are placed in the same directory as the SVG file.
+
 ### Fixed
 - Avoid font family name normalization on system fonts used in SVGs
 
