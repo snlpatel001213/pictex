@@ -28,7 +28,7 @@ class FontManager:
         if font_path_or_name:
             typeface = self._create_font_typeface(font_path_or_name)
         
-        if len(self._fallback_font_typefaces) > 0:
+        if not typeface and len(self._fallback_font_typefaces) > 0:
             # the first fallback font typeface is promoted to primary font
             typeface = self._fallback_font_typefaces.pop(0)
 
