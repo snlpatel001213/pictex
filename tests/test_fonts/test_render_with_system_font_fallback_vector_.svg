@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="869" height="84"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
-    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+    src: url('tests/assets/Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-NotoSansJP';
-    src: url('/home/runner/work/pictex/pictex/tests/assets/NotoSansJP-Regular.ttf');
+    src: url('tests/assets/NotoSansJP-Regular.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="869" height="84" />
 	<text font-size="70" font-style="italic" font-family="pictex-Lato" x="0, 40, 76, 90, 111, " y="69.089996, ">

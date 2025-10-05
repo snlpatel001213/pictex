@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="463" height="96"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
-    src: url('/home/runner/work/pictex/pictex/tests/assets/Lato-BoldItalic.ttf');
+    src: url('tests/assets/Lato-BoldItalic.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="463" height="96" />
 	<text font-size="80" font-style="italic" font-family="pictex-Lato" x="0, 40, 68, 97, 118, 156.75999, 194.75999, 222.75999, 265.76001, 293.16, 334.16, 377.16, 416.16, " y="78.959999, ">
