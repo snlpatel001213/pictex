@@ -1,21 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="520" height="117"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="520" height="117" />
 	<rect fill="#FFF0E6" width="250" height="81" />

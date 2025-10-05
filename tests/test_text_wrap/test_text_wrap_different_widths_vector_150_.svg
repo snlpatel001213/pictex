@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="150" height="165"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Lato';
-    src: url('tests/assets/Lato-BoldItalic.ttf');
+    src: url('Lato-BoldItalic.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="150" height="165" />
 	<rect fill="#DDD" width="150" height="165" />

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="404" height="104"><defs><style type="text/css">@font-face {
     font-family: 'pictex-Oswald';
-    src: url('tests/assets/Oswald-VariableFont_wght.ttf');
+    src: url('Oswald-VariableFont_wght.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="404" height="104" />
 	<text font-size="70" font-family="pictex-Oswald" x="0, 49.039993, 78.039993, 94.039993, 125.03999, 156.03999, 178.03999, 192.03999, 208.03999, 243.40999, 272.40997, 303.33997, 334.33997, 350.33997, 379.33997, " y="83.509995, ">

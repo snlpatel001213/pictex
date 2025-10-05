@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="400" height="198"><defs><style type="text/css">@font-face {
     font-family: 'pictex-FiraCodeMediumFiraCode';
-    src: url('tests/assets/FiraCode-Medium.ttf');
+    src: url('FiraCode-Medium.ttf');
 }</style></defs>
 	<rect fill-opacity="0" width="400" height="198" />
 	<rect fill="#F5F5DC" width="400" height="198" />
