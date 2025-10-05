@@ -13,6 +13,7 @@ class FontManager:
     def __init__(self, style: Style, font_smoothing: FontSmoothing):
         self._style = style
         self._font_smoothing = font_smoothing
+        self._font_heights: dict[str, float] = {}
         self._fallback_font_typefaces = self._prepare_fallbacks()
         self._primary_font = self._create_primary_font()
 
@@ -21,6 +22,16 @@ class FontManager:
 
     def get_fallback_font_typefaces(self) -> List[skia.Typeface]:
         return self._fallback_font_typefaces
+    
+    def get_font_height(self, font: skia.Font) -> float:
+        key: str = font.getTypeface().getFamilyName() + "_" + str(font.getSize())
+        if key in self._font_heights:
+            return self._font_heights[key]
+        
+        font_metrics = font.getMetrics()
+        height = -font_metrics.fAscent + font_metrics.fDescent + font_metrics.fLeading
+        self._font_heights[key] = height
+        return height
     
     def _create_primary_font(self) -> skia.Font:
         font_path_or_name = self._style.font_family.get()

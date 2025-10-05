@@ -20,7 +20,6 @@ class TextShaper:
         """
 
         shaped_lines: list[Line] = []
-        font_height = self._get_primary_font_height()
         
         for line_text in text.split('\n'):
             if not line_text:
@@ -34,18 +33,14 @@ class TextShaper:
                         shaped_lines.append(self._create_empty_line())
                         continue
                     wrapped_runs: list[TextRun] = self._split_line_in_runs(wrapped_line_text)
-                    line = self._create_line(wrapped_runs, font_height)
+                    line = self._create_line(wrapped_runs)
                     shaped_lines.append(line)
             else:
                 runs: list[TextRun] = self._split_line_in_runs(line_text)
-                line = self._create_line(runs, font_height)
+                line = self._create_line(runs)
                 shaped_lines.append(line)
         
         return shaped_lines
-
-    def _get_primary_font_height(self) -> float:
-        font_metrics = self._font_manager.get_primary_font().getMetrics()
-        return -font_metrics.fAscent + font_metrics.fDescent + font_metrics.fLeading
 
     def _create_empty_line(self) -> Line:
         """Handle empty lines by creating a placeholder with correct height"""
@@ -56,14 +51,16 @@ class TextShaper:
         line.bounds = skia.Rect.MakeLTRB(0, font_metrics.fAscent, 0, font_metrics.fDescent)
         return line
     
-    def _create_line(self, runs: list[TextRun], font_height: float) -> Line:
+    def _create_line(self, runs: list[TextRun]) -> Line:
         line_width: float = 0
+        font_height: float = 0
         for run in runs:
             run.blob = skia.TextBlob.MakeFromShapedText(run.text, run.font)
             # TODO: it's failing with the emoji '👨‍👩‍👧‍👦' in the system font from windows for emojis
             glyph_ids = [gid for run in list(run.blob) for gid in run.fGlyphIndices]
             run.width = sum(run.font.getWidths(glyph_ids))
             line_width += run.width
+            font_height = max(font_height, self._font_manager.get_font_height(run.font))
 
         return Line(runs=runs, width=line_width, height=font_height, bounds=skia.Rect.MakeWH(line_width, font_height))
     
