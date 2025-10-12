@@ -2,17 +2,18 @@ from pictex import *
 from pygments import lex
 from pygments.lexers import get_lexer_by_name
 from pygments.token import Token
+from itertools import groupby
 
 COLORS = {
-    "background": "#282C34",
-    "line_number": "#636D83",
-    "text": "#ABB2BF",
-    "keyword": "#C678DD",
-    "string": "#98C379",
-    "comment": "#7F848E",
-    "builtin": "#7058a8",
-    "name": "#61AFEF",
-    "literal": "#D19A66",
+    "background": "#1E222A",
+    "line_number": "#4B5263",
+    "text": "#D7DAE0",
+    "keyword": "#C792EA",
+    "string": "#C3E88D",
+    "comment": "#5C6370",
+    "builtin": "#82AAFF",
+    "name": "#89DDFF",
+    "literal": "#F78C6C",
 }
 
 TOKEN_MAP = {
@@ -28,21 +29,7 @@ TOKEN_MAP = {
     Token.Literal: COLORS["literal"],
 }
 
-CODE_SNIPPET = """
-from pictex import Row, Text
-
-# Create a simple, styled component
-def create_banner(text: str) -> Row:
-    '''This function demonstrates PicTex's power!'''
-    banner = Row(
-        Text(text).font_size(40).color("white")
-    ).padding(20).background_color("#5D3FD3")
-
-    return banner
-
-# Render the final image
-banner.render(create_banner("Hello, World! ✨")).show()
-"""
+CODE_SNIPPET = open("code_snippet.py", encoding="utf-8").read()
 
 def get_token_color(token) -> str:
     current_token = token
@@ -56,8 +43,12 @@ def get_token_color(token) -> str:
 def parse_python_line(line: str) -> Row:
     python_lexer = get_lexer_by_name("python")
     tokens = lex(line, python_lexer)
+    grouped_tokens = [
+        (token_type, ''.join(token_text for _, token_text in group))
+        for token_type, group in groupby(tokens, key=lambda t: t[0])
+    ]
     line_children = []
-    for token_type, token_text in tokens:
+    for token_type, token_text in grouped_tokens:
         color = get_token_color(token_type)
         line_children.append(Text(token_text).color(color))
 
@@ -88,7 +79,7 @@ window = (
 
 canvas = (
     Canvas()
-    .font_family("Consolas")
+    .font_family("FiraCode-VariableFont_wght.ttf")
     .font_size(16)
     .padding(60)
     .background_color("#757F9A")
