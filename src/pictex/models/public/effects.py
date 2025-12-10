@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Union, Tuple
 from .color import SolidColor
 from .paint_source import PaintSource
 
@@ -7,10 +8,12 @@ class Shadow:
     """Represents a drop shadow effect for an element.
 
     Attributes:
-        offset (tuple[float, float]): A tuple `(dx, dy)` specifying the
+        offset (tuple[Union[float, str], Union[float, str]]): A tuple `(dx, dy)` specifying the
             horizontal and vertical offset of the shadow from the element.
+            Can be absolute pixel values (float) or percentage strings (e.g., "5%").
             Positive `dx` values shift the shadow to the right, and positive
             `dy` values shift it downward. Defaults to `(2, 2)`.
+            When using percentages, the offset is calculated relative to the element's size.
         blur_radius (float): The radius of the Gaussian blur applied to the
             shadow's shape. Larger values create a softer, more diffused
             shadow, while a value of 0 results in a sharp, un-blurred shadow.
@@ -23,9 +26,16 @@ class Shadow:
         ```python
         from pictex import Text, Shadow
 
-        # A soft, standard drop shadow for a box
+        # A soft, standard drop shadow for a box (absolute pixels)
         soft_shadow = Shadow(
             offset=(3, 3),
+            blur_radius=5,
+            color="black"
+        )
+
+        # Shadow with percentage offsets (relative to element size)
+        percentage_shadow = Shadow(
+            offset=("2%", "2%"),
             blur_radius=5,
             color="black"
         )
@@ -41,7 +51,7 @@ class Shadow:
         )
         ```
     """
-    offset: tuple[float, float] = (2, 2)
+    offset: Tuple[Union[float, str], Union[float, str]] = (2, 2)
     blur_radius: float = 2.0
     color: SolidColor = field(default_factory=lambda: SolidColor(0, 0, 0, a=128))
 
@@ -49,6 +59,16 @@ class Shadow:
         self.color = SolidColor.from_str(self.color) if isinstance(self.color, str) else self.color
         if not isinstance(self.color, SolidColor):
              raise TypeError("Argument 'color' must be a SolidColor object or a valid color string.")
+        
+        # Validate offset tuple
+        if not isinstance(self.offset, tuple) or len(self.offset) != 2:
+            raise TypeError("offset must be a tuple of 2 elements (dx, dy)")
+        
+        for i, val in enumerate(self.offset):
+            if not isinstance(val, (float, int, str)):
+                raise TypeError(f"offset[{i}] must be a float, int, or percentage string (e.g., '5%')")
+            if isinstance(val, str) and not val.endswith('%'):
+                raise ValueError(f"offset[{i}] string must end with '%' (e.g., '5%')")
 
 @dataclass
 class OutlineStroke:

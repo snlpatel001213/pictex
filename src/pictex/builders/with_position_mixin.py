@@ -14,8 +14,8 @@ class WithPositionMixin:
             self,
             x: Union[float, int, str],
             y: Union[float, int, str],
-            x_offset: float = 0,
-            y_offset: float = 0
+            x_offset: Union[float, int, str] = 0,
+            y_offset: Union[float, int, str] = 0
     ) -> Self:
         """Sets the element's position relative to the root canvas.
 
@@ -40,10 +40,10 @@ class WithPositionMixin:
             y (Union[float, int, str]): The vertical position value. Can be an
                 absolute pixel value, a percentage string (e.g., "75%"), or an
                 alignment keyword ("top", "center", "bottom").
-            x_offset (float, optional): An additional horizontal offset in
-                pixels. Defaults to 0.
-            y_offset (float, optional): An additional vertical offset in
-                pixels. Defaults to 0.
+            x_offset (Union[float, int, str], optional): An additional horizontal offset.
+                Can be pixels (float/int) or percentage string (e.g., "5%"). Defaults to 0.
+            y_offset (Union[float, int, str], optional): An additional vertical offset.
+                Can be pixels (float/int) or percentage string (e.g., "5%"). Defaults to 0.
 
         Returns:
             Self: The instance for method chaining.
@@ -54,8 +54,8 @@ class WithPositionMixin:
             self,
             x: Union[float, int, str],
             y: Union[float, int, str],
-            x_offset: float = 0,
-            y_offset: float = 0
+            x_offset: Union[float, int, str] = 0,
+            y_offset: Union[float, int, str] = 0
     ) -> Self:
         """Sets the element's position relative to its direct parent's content area.
 
@@ -79,10 +79,10 @@ class WithPositionMixin:
             y (Union[float, int, str]): The vertical position value. Can be an
                 absolute pixel value, a percentage string (e.g., "75%"), or an
                 alignment keyword ("top", "center", "bottom").
-            x_offset (float, optional): An additional horizontal offset in
-                pixels. Defaults to 0.
-            y_offset (float, optional): An additional vertical offset in
-                pixels. Defaults to 0.
+            x_offset (Union[float, int, str], optional): An additional horizontal offset.
+                Can be pixels (float/int) or percentage string (e.g., "5%"). Defaults to 0.
+            y_offset (Union[float, int, str], optional): An additional vertical offset.
+                Can be pixels (float/int) or percentage string (e.g., "5%"). Defaults to 0.
 
         Returns:
             Self: The instance for method chaining.
@@ -93,14 +93,30 @@ class WithPositionMixin:
             self,
             x: Union[float, int, str],
             y: Union[float, int, str],
-            x_offset: float,
-            y_offset: float,
+            x_offset: Union[float, int, str],
+            y_offset: Union[float, int, str],
             mode: PositionMode
     ) -> Self:
         container_ax, content_ax = self._parse_anchor(x, axis='x')
         container_ay, content_ay = self._parse_anchor(y, axis='y')
-        x_offset = x + x_offset if isinstance(x, (float, int)) else x_offset
-        y_offset = y + y_offset if isinstance(y, (float, int)) else y_offset
+        
+        # Handle x_offset: if x is numeric, add it to x_offset; otherwise use x_offset as-is
+        if isinstance(x, (float, int)):
+            if isinstance(x_offset, (float, int)):
+                x_offset = x + x_offset
+            elif isinstance(x_offset, str):
+                # Can't add numeric x to percentage string, keep x_offset as-is
+                pass
+        # If x is string (percentage/keyword), x_offset is used as-is
+        
+        # Handle y_offset: if y is numeric, add it to y_offset; otherwise use y_offset as-is
+        if isinstance(y, (float, int)):
+            if isinstance(y_offset, (float, int)):
+                y_offset = y + y_offset
+            elif isinstance(y_offset, str):
+                # Can't add numeric y to percentage string, keep y_offset as-is
+                pass
+        # If y is string (percentage/keyword), y_offset is used as-is
 
         self._style.position.set(Position(
             container_anchor_x=container_ax,

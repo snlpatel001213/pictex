@@ -33,7 +33,11 @@ class TextPainter(Painter):
         if self._is_svg:
             return
 
-        filter = create_composite_shadow_filter(self._style.text_shadows.get())
+        filter = create_composite_shadow_filter(
+            self._style.text_shadows.get(),
+            element_width=self._text_bounds.width(),
+            element_height=self._text_bounds.height()
+        )
         if not filter:
             return
         paint.setImageFilter(filter)

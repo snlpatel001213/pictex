@@ -28,7 +28,12 @@ class BackgroundPainter(Painter):
             return
 
         paint = skia.Paint(AntiAlias=True)
-        shadow_filter = create_composite_shadow_filter(self._style.box_shadows.get(), should_remove_content=True)
+        shadow_filter = create_composite_shadow_filter(
+            self._style.box_shadows.get(), 
+            should_remove_content=True,
+            element_width=self._box_bounds.width(),
+            element_height=self._box_bounds.height()
+        )
         if shadow_filter:
             paint.setImageFilter(shadow_filter)
             canvas.drawRRect(box_rect, paint)
