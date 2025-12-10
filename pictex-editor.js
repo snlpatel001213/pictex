@@ -141,6 +141,10 @@ export class PicTexEditor {
                                     <input type="color" id="pt-color">
                                 </div>
                             </div>
+                            <div class="pictex-row" style="margin-bottom:10px;">
+                                <button class="pictex-btn pictex-btn-secondary" id="pt-add-name" style="flex:1; font-size:10px;">+ Name</button>
+                                <button class="pictex-btn pictex-btn-secondary" id="pt-add-gender" style="flex:1; font-size:10px;">+ Gender</button>
+                            </div>
                             <div class="pictex-control-group">
                                 <label>Font</label>
                                 <select id="pt-font">
@@ -261,6 +265,16 @@ export class PicTexEditor {
         w.querySelector('#pt-image-input').onchange = (e) => this._handleImageUpload(e);
         w.querySelector('#pt-import-json').onclick = () => w.querySelector('#pt-json-input').click();
         w.querySelector('#pt-json-input').onchange = (e) => this._handleMetadataImport(e);
+
+        // Variable placeholders
+        const insertPlaceholder = (text) => {
+            const input = this.ui.inputs.content;
+            input.value += text;
+            input.focus();
+            this._updateFromUI();
+        };
+        w.querySelector('#pt-add-name').onclick = () => insertPlaceholder('{child_name}');
+        w.querySelector('#pt-add-gender').onclick = () => insertPlaceholder('{gender}');
 
         // Save
         w.querySelector('#pt-save').onclick = () => this.save();
