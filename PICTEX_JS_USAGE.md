@@ -216,3 +216,43 @@ This script requires the `pictex` Python package:
 ```bash
 pip install pictex
 ```
+
+---
+
+## Using Custom Fonts
+
+To use custom fonts (e.g., Google Fonts or local files) in both the JS editor and the Python backend, follow these steps:
+
+### 1. Frontend Setup (JS)
+Load the font using CSS `@font-face` so the browser can render it on the canvas.
+
+```css
+/* In your CSS file */
+@font-face {
+    font-family: 'MyCustomFont';
+    src: url('/fonts/MyCustomFont.ttf');
+}
+```
+
+Then, use the font name in `PicTexEditor`:
+
+```javascript
+const text = new Text("Hello").fontFamily("MyCustomFont");
+```
+
+### 2. Backend Setup (Python)
+The Python `pictex` library needs the actual file path to the font. When recreating from JSON, you must map the font family name (from JS) to the file path.
+
+Update `recreate_from_json.py` to include a font mapping:
+
+```python
+FONT_MAPPING = {
+    "MyCustomFont": "fonts/MyCustomFont.ttf",
+    "Arial": "Arial.ttf" # System fonts might need full paths on Linux
+}
+
+# In the script loop:
+font_family = item['font_family']
+font_path = FONT_MAPPING.get(font_family, font_family) # Fallback to name
+node.font_family(font_path)
+```
