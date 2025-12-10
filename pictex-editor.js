@@ -118,7 +118,9 @@ export class PicTexEditor {
                     <div class="pictex-row">
                         <button class="pictex-btn pictex-btn-secondary" id="pt-add-text" style="flex:1">+ Text</button>
                         <button class="pictex-btn pictex-btn-secondary" id="pt-add-image" style="flex:1">+ Image</button>
+                        <button class="pictex-btn pictex-btn-secondary" id="pt-import-json" style="flex:1">Import JSON</button>
                         <input type="file" id="pt-image-input" accept="image/*" style="display:none">
+                        <input type="file" id="pt-json-input" accept=".json" style="display:none">
                     </div>
 
                     <hr style="border:0; border-top:1px solid #ddd; width:100%">
@@ -257,6 +259,8 @@ export class PicTexEditor {
         w.querySelector('#pt-add-text').onclick = () => this.addText();
         w.querySelector('#pt-add-image').onclick = () => w.querySelector('#pt-image-input').click();
         w.querySelector('#pt-image-input').onchange = (e) => this._handleImageUpload(e);
+        w.querySelector('#pt-import-json').onclick = () => w.querySelector('#pt-json-input').click();
+        w.querySelector('#pt-json-input').onchange = (e) => this._handleMetadataImport(e);
 
         // Save
         w.querySelector('#pt-save').onclick = () => this.save();
@@ -307,6 +311,91 @@ export class PicTexEditor {
         };
         reader.readAsDataURL(file);
         e.target.value = '';
+    }
+
+    _handleMetadataImport(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async (evt) => {
+            try {
+                const data = JSON.parse(evt.target.result);
+                if (data.elements && Array.isArray(data.elements)) {
+                    await this._restoreFromJSON(data.elements);
+                }
+            } catch (err) {
+                console.error("Failed to parse JSON", err);
+                alert("Invalid JSON file");
+            }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    }
+
+    async _restoreFromJSON(elements) {
+        const baseWidth = this.baseImageNode ? this.baseImageNode._computedWidth : 800;
+        const baseHeight = this.baseImageNode ? this.baseImageNode._computedHeight : 600;
+
+        for (const el of elements) {
+            let node;
+
+            // Helper to parse percentage
+            const parsePct = (val, base) => {
+                if (typeof val === 'string' && val.endsWith('%')) {
+                    return (parseFloat(val) / 100) * base;
+                }
+                return parseFloat(val) || 0;
+            };
+
+            if (el.type === 'text') {
+                node = new Text(el.content || "Text");
+                node.fontSize(parsePct(el.font_size, baseHeight));
+                node.fontFamily(el.font_family || 'Arial');
+                node.color(el.color || '#000000');
+
+                if (el.shadow) {
+                    node._textShadows = [new Shadow({
+                        blurRadius: el.shadow.blur,
+                        color: el.shadow.color,
+                        offset: el.shadow.offset || [2, 2]
+                    })];
+                }
+            } else if (el.type === 'image') {
+                node = new ImageNode(el.src);
+                await node.load();
+                node._width = parsePct(el.width, baseWidth);
+                node._height = parsePct(el.height, baseHeight); // Height relative to base height usually? Or aspect ratio? 
+                // The export logic used baseHeight for height percentage.
+
+                if (el.shadow) {
+                    node._shadows = [new Shadow({
+                        blurRadius: el.shadow.blur,
+                        color: el.shadow.color,
+                        offset: el.shadow.offset || [2, 2]
+                    })];
+                }
+            }
+
+            if (node) {
+                node._x = parsePct(el.x, baseWidth);
+                node._y = parsePct(el.y, baseHeight);
+                node.padding(el.padding || 0);
+                node.borderRadius(el.border_radius || 0);
+
+                if (el.background) {
+                    if (el.background.type === 'linear_gradient') {
+                        node.backgroundColor(new LinearGradient({
+                            colors: el.background.colors
+                        }));
+                    } else {
+                        node.backgroundColor(el.background);
+                    }
+                }
+
+                this.nodes.push(node);
+            }
+        }
+        this.render();
     }
 
     deleteSelected() {
