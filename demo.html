@@ -161,6 +161,7 @@
             <input type="file" id="overlayImageInput" accept="image/*" style="display: none;">
 
             <button id="downloadBtn" style="background-color: #28a745;">Download Image</button>
+            <button id="exportJsonBtn" style="background-color: #17a2b8;">Export JSON</button>
 
             <hr>
 
@@ -624,6 +625,67 @@
                 selectedNode = tempSelection;
                 render();
             });
+        });
+
+        document.getElementById('exportJsonBtn').addEventListener('click', () => {
+            if (!baseImageNode) return;
+
+            const baseWidth = baseImageNode._computedWidth;
+            const baseHeight = baseImageNode._computedHeight;
+
+            const exportData = {
+                base_image: baseImageNode.src,
+                elements: nodes.map(node => {
+                    let shadowObj = null;
+                    if (node instanceof Text) {
+                        shadowObj = node._textShadows && node._textShadows[0];
+                    } else {
+                        shadowObj = node._shadows && node._shadows[0];
+                    }
+
+                    const common = {
+                        type: node instanceof Text ? 'text' : 'image',
+                        x: (node._x / baseWidth * 100).toFixed(2) + '%',
+                        y: (node._y / baseHeight * 100).toFixed(2) + '%',
+                        padding: node._padding,
+                        border_radius: node._borderRadius,
+                        background: node._backgroundColor instanceof LinearGradient ? {
+                            type: 'linear_gradient',
+                            colors: node._backgroundColor.colors
+                        } : node._backgroundColor,
+                        shadow: shadowObj ? {
+                            blur: shadowObj.blurRadius,
+                            color: shadowObj.color,
+                            offset: shadowObj.offset
+                        } : null
+                    };
+
+                    if (node instanceof Text) {
+                        return {
+                            ...common,
+                            content: node.content,
+                            font_size: (node._fontSize / baseHeight * 100).toFixed(2) + '%', // Relative to height
+                            font_family: node._fontFamily,
+                            color: node._color
+                        };
+                    } else {
+                        return {
+                            ...common,
+                            src: node.src,
+                            width: (node._computedWidth / baseWidth * 100).toFixed(2) + '%',
+                            height: (node._computedHeight / baseHeight * 100).toFixed(2) + '%'
+                        };
+                    }
+                })
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "pictex_export.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
         });
 
         inputs.bgType.addEventListener('change', () => {
