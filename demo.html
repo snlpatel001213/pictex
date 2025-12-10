@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PicTex JS Interactive Demo</title>
+    <title>PicTex JS Interactive Editor</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -136,6 +136,10 @@
             padding: 20px;
             font-style: italic;
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -150,40 +154,103 @@
                 <input type="file" id="imageInput" accept="image/*">
             </div>
 
-            <button id="addTextBtn" class="secondary">+ Add New Text</button>
+            <div class="row">
+                <button id="addTextBtn" class="secondary" style="flex:1">+ Add Text</button>
+                <button id="addImageBtn" class="secondary" style="flex:1">+ Add Image</button>
+            </div>
+            <input type="file" id="overlayImageInput" accept="image/*" style="display: none;">
+
             <button id="downloadBtn" style="background-color: #28a745;">Download Image</button>
 
             <hr>
 
-            <div id="textControls" class="selected-controls" style="display: none;">
-                <h3>Selected Text Properties</h3>
+            <div id="controlsPanel" class="selected-controls" style="display: none;">
+                <h3 id="panelTitle">Selected Item Properties</h3>
 
+                <!-- Text Specific Controls -->
+                <div id="textSpecificControls">
+                    <div class="control-group">
+                        <label>Content</label>
+                        <input type="text" id="textContent">
+                    </div>
+
+                    <div class="row">
+                        <div class="control-group" style="flex:1">
+                            <label>Font Size</label>
+                            <input type="number" id="fontSize">
+                        </div>
+                        <div class="control-group" style="flex:1">
+                            <label>Color</label>
+                            <input type="color" id="textColor">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Font Family</label>
+                        <select id="fontFamily">
+                            <option value="Arial">Arial</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Image Specific Controls -->
+                <div id="imageSpecificControls" class="hidden">
+                    <div class="row">
+                        <div class="control-group" style="flex:1">
+                            <label>Width (px)</label>
+                            <input type="number" id="imgWidth">
+                        </div>
+                        <div class="control-group" style="flex:1">
+                            <label>Height (px)</label>
+                            <input type="number" id="imgHeight">
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <!-- Common Styling -->
                 <div class="control-group">
-                    <label>Content</label>
-                    <input type="text" id="textContent">
+                    <label>Background</label>
+                    <select id="bgType">
+                        <option value="none">None</option>
+                        <option value="solid">Solid Color</option>
+                        <option value="gradient">Linear Gradient</option>
+                    </select>
+                </div>
+
+                <div id="bgColorControl" class="control-group hidden">
+                    <label>Background Color</label>
+                    <input type="color" id="bgColor">
+                </div>
+
+                <div id="bgGradientControl" class="hidden">
+                    <div class="row">
+                        <div class="control-group" style="flex:1">
+                            <label>Start Color</label>
+                            <input type="color" id="gradStart">
+                        </div>
+                        <div class="control-group" style="flex:1">
+                            <label>End Color</label>
+                            <input type="color" id="gradEnd">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div class="control-group" style="flex:1">
-                        <label>Font Size</label>
-                        <input type="number" id="fontSize">
+                        <label>Border Radius</label>
+                        <input type="number" id="borderRadius" value="0">
                     </div>
                     <div class="control-group" style="flex:1">
-                        <label>Color</label>
-                        <input type="color" id="textColor">
+                        <label>Padding</label>
+                        <input type="number" id="padding" value="0">
                     </div>
-                </div>
-
-                <div class="control-group">
-                    <label>Font Family</label>
-                    <select id="fontFamily">
-                        <option value="Arial">Arial</option>
-                        <option value="Verdana">Verdana</option>
-                        <option value="Georgia">Georgia</option>
-                        <option value="Courier New">Courier New</option>
-                        <option value="Impact">Impact</option>
-                        <option value="Times New Roman">Times New Roman</option>
-                    </select>
                 </div>
 
                 <label>Shadow Effects</label>
@@ -199,12 +266,12 @@
                 </div>
 
                 <div class="control-group" style="margin-top: 10px;">
-                    <button id="deleteTextBtn" class="danger">Delete Selected</button>
+                    <button id="deleteBtn" class="danger">Delete Selected</button>
                 </div>
             </div>
 
             <div id="noSelectionMsg" class="no-selection">
-                Select a text item to edit its properties.
+                Select an item to edit its properties.
             </div>
         </div>
 
@@ -214,11 +281,11 @@
     </div>
 
     <script type="module">
-        import { PicTexCanvas, ImageNode, Text, Shadow, Group } from './pictex.js';
+        import { PicTexCanvas, ImageNode, Text, Shadow, Group, LinearGradient } from './pictex.js';
 
         // State
-        let imageNode = null;
-        let textNodes = [];
+        let baseImageNode = null;
+        let nodes = []; // Contains Text and ImageNode overlays
         let selectedNode = null;
         let renderer = new PicTexCanvas();
         let isDragging = false;
@@ -227,15 +294,31 @@
 
         // DOM Elements
         const previewContainer = document.getElementById('previewContainer');
-        const controlsPanel = document.getElementById('textControls');
+        const controlsPanel = document.getElementById('controlsPanel');
         const noSelectionMsg = document.getElementById('noSelectionMsg');
+        const textSpecificControls = document.getElementById('textSpecificControls');
+        const imageSpecificControls = document.getElementById('imageSpecificControls');
+        const overlayImageInput = document.getElementById('overlayImageInput');
 
         // Inputs
         const inputs = {
+            // Text
             content: document.getElementById('textContent'),
             fontSize: document.getElementById('fontSize'),
             color: document.getElementById('textColor'),
             fontFamily: document.getElementById('fontFamily'),
+
+            // Image
+            imgWidth: document.getElementById('imgWidth'),
+            imgHeight: document.getElementById('imgHeight'),
+
+            // Common
+            bgType: document.getElementById('bgType'),
+            bgColor: document.getElementById('bgColor'),
+            gradStart: document.getElementById('gradStart'),
+            gradEnd: document.getElementById('gradEnd'),
+            borderRadius: document.getElementById('borderRadius'),
+            padding: document.getElementById('padding'),
             shadowBlur: document.getElementById('shadowBlur'),
             shadowColor: document.getElementById('shadowColor'),
         };
@@ -243,8 +326,8 @@
         // Initial Setup
         async function init() {
             // Load default image
-            imageNode = new ImageNode('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
-            await imageNode.load();
+            baseImageNode = new ImageNode('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            await baseImageNode.load();
 
             // Add initial text
             addText("Hello World", 100, 100);
@@ -270,15 +353,33 @@
             text._x = x;
             text._y = y;
 
-            textNodes.push(text);
+            nodes.push(text);
             selectNode(text);
+            render();
+        }
+
+        async function addImage(src, x = 50, y = 50) {
+            const img = new ImageNode(src);
+            await img.load();
+            // Default size to something reasonable if too huge
+            if (img._width > 300) {
+                const ratio = img._height / img._width;
+                img._width = 300;
+                img._height = 300 * ratio;
+            }
+
+            img._x = x;
+            img._y = y;
+
+            nodes.push(img);
+            selectNode(img);
             render();
         }
 
         function selectNode(node) {
             selectedNode = node;
             updateUI();
-            render(); // Re-render to show selection indicator (if we implement one)
+            render();
         }
 
         function updateUI() {
@@ -286,37 +387,109 @@
                 controlsPanel.style.display = 'block';
                 noSelectionMsg.style.display = 'none';
 
-                // Populate inputs
-                inputs.content.value = selectedNode.content;
-                inputs.fontSize.value = selectedNode._fontSize;
-                inputs.color.value = selectedNode._color;
-                inputs.fontFamily.value = selectedNode._fontFamily;
+                // Toggle specific controls
+                if (selectedNode instanceof Text) {
+                    textSpecificControls.classList.remove('hidden');
+                    imageSpecificControls.classList.add('hidden');
+                    document.getElementById('panelTitle').textContent = "Text Properties";
 
-                const shadow = selectedNode._textShadows[0] || new Shadow();
+                    inputs.content.value = selectedNode.content;
+                    inputs.fontSize.value = selectedNode._fontSize;
+                    inputs.color.value = selectedNode._color;
+                    inputs.fontFamily.value = selectedNode._fontFamily;
+                } else if (selectedNode instanceof ImageNode) {
+                    textSpecificControls.classList.add('hidden');
+                    imageSpecificControls.classList.remove('hidden');
+                    document.getElementById('panelTitle').textContent = "Image Properties";
+
+                    inputs.imgWidth.value = Math.round(selectedNode._computedWidth);
+                    inputs.imgHeight.value = Math.round(selectedNode._computedHeight);
+                }
+
+                // Common Properties
+                inputs.borderRadius.value = selectedNode._borderRadius;
+                inputs.padding.value = selectedNode._padding;
+
+                // Background Logic
+                const bg = selectedNode._backgroundColor;
+                if (bg instanceof LinearGradient) {
+                    inputs.bgType.value = 'gradient';
+                    inputs.gradStart.value = bg.colors[0];
+                    inputs.gradEnd.value = bg.colors[bg.colors.length - 1];
+                } else if (bg) {
+                    inputs.bgType.value = 'solid';
+                    inputs.bgColor.value = bg;
+                } else {
+                    inputs.bgType.value = 'none';
+                }
+                toggleBgControls();
+
+                // Shadow
+                const shadow = (selectedNode._shadows && selectedNode._shadows[0]) ||
+                    (selectedNode._textShadows && selectedNode._textShadows[0]) ||
+                    new Shadow();
                 inputs.shadowBlur.value = shadow.blurRadius;
                 inputs.shadowColor.value = shadow.color;
+
             } else {
                 controlsPanel.style.display = 'none';
                 noSelectionMsg.style.display = 'block';
             }
         }
 
+        function toggleBgControls() {
+            const type = inputs.bgType.value;
+            document.getElementById('bgColorControl').classList.add('hidden');
+            document.getElementById('bgGradientControl').classList.add('hidden');
+
+            if (type === 'solid') {
+                document.getElementById('bgColorControl').classList.remove('hidden');
+            } else if (type === 'gradient') {
+                document.getElementById('bgGradientControl').classList.remove('hidden');
+            }
+        }
+
         function updateSelectedNode() {
             if (!selectedNode) return;
 
-            selectedNode.content = inputs.content.value;
-            selectedNode.fontSize(parseInt(inputs.fontSize.value));
-            selectedNode.color(inputs.color.value);
-            selectedNode.fontFamily(inputs.fontFamily.value);
+            if (selectedNode instanceof Text) {
+                selectedNode.content = inputs.content.value;
+                selectedNode.fontSize(parseInt(inputs.fontSize.value));
+                selectedNode.color(inputs.color.value);
+                selectedNode.fontFamily(inputs.fontFamily.value);
+            } else if (selectedNode instanceof ImageNode) {
+                selectedNode._width = parseInt(inputs.imgWidth.value);
+                selectedNode._height = parseInt(inputs.imgHeight.value);
+            }
 
-            // Update Shadow
-            selectedNode._textShadows = [
-                new Shadow({
-                    blurRadius: parseInt(inputs.shadowBlur.value),
-                    color: inputs.shadowColor.value,
-                    offset: [2, 2]
-                })
-            ];
+            // Common
+            selectedNode.borderRadius(parseInt(inputs.borderRadius.value));
+            selectedNode.padding(parseInt(inputs.padding.value));
+
+            // Background
+            const bgType = inputs.bgType.value;
+            if (bgType === 'none') {
+                selectedNode.backgroundColor(null);
+            } else if (bgType === 'solid') {
+                selectedNode.backgroundColor(inputs.bgColor.value);
+            } else if (bgType === 'gradient') {
+                selectedNode.backgroundColor(new LinearGradient({
+                    colors: [inputs.gradStart.value, inputs.gradEnd.value]
+                }));
+            }
+
+            // Shadow
+            const shadow = new Shadow({
+                blurRadius: parseInt(inputs.shadowBlur.value),
+                color: inputs.shadowColor.value,
+                offset: [2, 2]
+            });
+
+            if (selectedNode instanceof Text) {
+                selectedNode._textShadows = [shadow];
+            } else {
+                selectedNode._shadows = [shadow];
+            }
 
             render();
         }
@@ -337,9 +510,9 @@
 
             // Check hit test in reverse order (top to bottom)
             let hit = null;
-            for (let i = textNodes.length - 1; i >= 0; i--) {
-                if (textNodes[i].hitTest(coords.x, coords.y)) {
-                    hit = textNodes[i];
+            for (let i = nodes.length - 1; i >= 0; i--) {
+                if (nodes[i].hitTest(coords.x, coords.y)) {
+                    hit = nodes[i];
                     break;
                 }
             }
@@ -376,8 +549,8 @@
         // Render Loop
         async function render() {
             const root = new Group();
-            root.add(imageNode);
-            textNodes.forEach(node => root.add(node));
+            root.add(baseImageNode);
+            nodes.forEach(node => root.add(node));
 
             await renderer.render(root);
 
@@ -404,8 +577,8 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    imageNode = new ImageNode(event.target.result);
-                    imageNode.load().then(render);
+                    baseImageNode = new ImageNode(event.target.result);
+                    baseImageNode.load().then(render);
                 };
                 reader.readAsDataURL(file);
             }
@@ -413,9 +586,26 @@
 
         document.getElementById('addTextBtn').addEventListener('click', () => addText());
 
-        document.getElementById('deleteTextBtn').addEventListener('click', () => {
+        document.getElementById('addImageBtn').addEventListener('click', () => {
+            overlayImageInput.click();
+        });
+
+        overlayImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    addImage(event.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+            // Reset input so same file can be selected again
+            overlayImageInput.value = '';
+        });
+
+        document.getElementById('deleteBtn').addEventListener('click', () => {
             if (selectedNode) {
-                textNodes = textNodes.filter(n => n !== selectedNode);
+                nodes = nodes.filter(n => n !== selectedNode);
                 selectedNode = null;
                 updateUI();
                 render();
@@ -423,17 +613,6 @@
         });
 
         document.getElementById('downloadBtn').addEventListener('click', () => {
-            // Render without selection box
-            const root = new Group();
-            root.add(imageNode);
-            textNodes.forEach(node => root.add(node));
-
-            // We need a clean render for download
-            // Since renderer.render is async and modifies the canvas, 
-            // we can just call it, wait, then download.
-            // But we need to make sure we don't draw the selection box.
-            // A quick hack is to temporarily clear selection, render, download, restore selection.
-
             const tempSelection = selectedNode;
             selectedNode = null;
             render().then(() => {
@@ -447,9 +626,14 @@
             });
         });
 
+        inputs.bgType.addEventListener('change', () => {
+            toggleBgControls();
+            updateSelectedNode();
+        });
+
         // Bind inputs
         Object.values(inputs).forEach(input => {
-            input.addEventListener('input', updateSelectedNode);
+            if (input) input.addEventListener('input', updateSelectedNode);
         });
 
         // Start

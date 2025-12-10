@@ -24,7 +24,8 @@ class RenderNode {
         this._padding = 0;
         this._margin = 0;
         this._backgroundColor = null;
-        this._borderRadius = 0;
+        this._borderColor = 'black';
+        this._borderWidth = 0;
         this._shadows = [];
         this._width = null;
         this._height = null;
@@ -38,6 +39,7 @@ class RenderNode {
     margin(value) { this._margin = value; return this; }
     backgroundColor(value) { this._backgroundColor = value; return this; }
     borderRadius(value) { this._borderRadius = value; return this; }
+    border(width, color = 'black') { this._borderWidth = width; this._borderColor = color; return this; }
     boxShadows(shadow) { this._shadows.push(shadow); return this; }
     width(value) { this._width = value; return this; }
     height(value) { this._height = value; return this; }
@@ -63,7 +65,7 @@ class RenderNode {
         }
 
         // Background & Border Radius
-        if (this._backgroundColor || this._borderRadius > 0) {
+        if (this._backgroundColor || this._borderRadius > 0 || this._borderWidth > 0) {
             ctx.beginPath();
             if (this._borderRadius > 0) {
                 ctx.roundRect(0, 0, this._computedWidth, this._computedHeight, this._borderRadius);
@@ -86,6 +88,12 @@ class RenderNode {
                     ctx.fillStyle = this._backgroundColor;
                 }
                 ctx.fill();
+            }
+
+            if (this._borderWidth > 0) {
+                ctx.lineWidth = this._borderWidth;
+                ctx.strokeStyle = this._borderColor;
+                ctx.stroke();
             }
         }
 
