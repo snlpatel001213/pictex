@@ -75,3 +75,21 @@ class OutlineStroke:
     """Represents an outline text stroke."""
     width: float = 2.0
     color: PaintSource = field(default_factory=lambda: SolidColor(0, 0, 0))
+
+@dataclass
+class ImageEffects:
+    """Represents a collection of image adjustment effects."""
+    brightness: float = 100.0  # Percentage
+    contrast: float = 100.0    # Percentage
+    saturation: float = 100.0  # Percentage
+    warmth: float = 0.0        # Percentage (Sepia)
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'ImageEffects':
+        return cls(
+            brightness=float(data.get('brightness', 100)),
+            contrast=float(data.get('contrast', 100)),
+            saturation=float(data.get('saturation', 100)),
+            warmth=float(data.get('warmth', 0))
+        )
+

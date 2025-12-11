@@ -1,4 +1,4 @@
-from .effects import Shadow, OutlineStroke
+from .effects import Shadow, OutlineStroke, ImageEffects
 from .style import Style
 from .typography import FontStyle, FontWeight, FontSmoothing, TextAlign, TextWrap
 from .paint_source import PaintSource
@@ -19,7 +19,7 @@ from .render_node import RenderNode
 from .node_type import NodeType
 
 __all__ = [
-    "Shadow", "OutlineStroke",
+    "Shadow", "OutlineStroke", "ImageEffects",
     "Style",
     "FontStyle", "FontWeight", "FontSmoothing", "TextAlign", "TextWrap",
     "PaintSource",

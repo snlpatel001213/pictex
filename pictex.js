@@ -24,6 +24,7 @@ class RenderNode {
         this._padding = 0;
         this._margin = 0;
         this._backgroundColor = null;
+        this._borderRadius = 0;
         this._borderColor = 'black';
         this._borderWidth = 0;
         this._shadows = [];
@@ -34,6 +35,10 @@ class RenderNode {
         this._computedWidth = 0;
         this._computedHeight = 0;
         this._rotation = 0;
+        this._brightness = 100; // %
+        this._contrast = 100;   // %
+        this._saturation = 100; // %
+        this._warmth = 0;       // % (Sepia)
     }
 
     padding(value) { this._padding = value; return this; }
@@ -45,6 +50,10 @@ class RenderNode {
     width(value) { this._width = value; return this; }
     height(value) { this._height = value; return this; }
     rotate(value) { this._rotation = value; return this; }
+    brightness(value) { this._brightness = value; return this; }
+    contrast(value) { this._contrast = value; return this; }
+    saturation(value) { this._saturation = value; return this; }
+    warmth(value) { this._warmth = value; return this; }
 
     async layout(ctx, maxWidth) {
         // Base layout logic
@@ -62,6 +71,22 @@ class RenderNode {
             ctx.translate(halfW, halfH);
             ctx.rotate(this._rotation * Math.PI / 180);
             ctx.translate(-halfW, -halfH);
+        }
+
+        // Apply filters (only if not default to improve perf)
+        // Note: ctx.filter applies to drawing operations. We want it primarily for the content (image/text).
+        // If we apply it here, it applies to background and border too.
+        // Usually effects like brightness/contrast are desired on the image itself.
+        // However, standard CSS 'filter' property applies to the whole element including border/background.
+        // So applying it here is consistent with CSS behavior.
+        const filters = [];
+        if (this._brightness !== 100) filters.push(`brightness(${this._brightness}%)`);
+        if (this._contrast !== 100) filters.push(`contrast(${this._contrast}%)`);
+        if (this._saturation !== 100) filters.push(`saturate(${this._saturation}%)`);
+        if (this._warmth !== 0) filters.push(`sepia(${this._warmth}%)`);
+
+        if (filters.length > 0) {
+            ctx.filter = filters.join(' ');
         }
 
         // Shadows

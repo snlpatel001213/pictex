@@ -405,6 +405,58 @@ class Stylable:
         self._style.text_wrap.set(wrap if isinstance(wrap, TextWrap) else TextWrap(wrap))
         return self
 
+    def brightness(self, value: float) -> Self:
+        """Sets the brightness adjustment for the image (percentage).
+        
+        Args:
+            value: The percentage of brightness (e.g., 100 is normal).
+        """
+        effects = self._style.image_effects.get()
+        if not effects:
+            effects = ImageEffects()
+            self._style.image_effects.set(effects)
+        effects.brightness = value
+        return self
+
+    def contrast(self, value: float) -> Self:
+        """Sets the contrast adjustment for the image (percentage).
+        
+        Args:
+            value: The percentage of contrast (e.g., 100 is normal).
+        """
+        effects = self._style.image_effects.get()
+        if not effects:
+            effects = ImageEffects()
+            self._style.image_effects.set(effects)
+        effects.contrast = value
+        return self
+
+    def saturation(self, value: float) -> Self:
+        """Sets the saturation adjustment for the image (percentage).
+        
+        Args:
+            value: The percentage of saturation (e.g., 100 is normal).
+        """
+        effects = self._style.image_effects.get()
+        if not effects:
+            effects = ImageEffects()
+            self._style.image_effects.set(effects)
+        effects.saturation = value
+        return self
+
+    def warmth(self, value: float) -> Self:
+        """Sets the warmth (sepia) adjustment for the image (percentage).
+        
+        Args:
+            value: The percentage of warmth (e.g., 0 is no warmth).
+        """
+        effects = self._style.image_effects.get()
+        if not effects:
+            effects = ImageEffects()
+            self._style.image_effects.set(effects)
+        effects.warmth = value
+        return self
+
     def _build_color(self, color: Union[str, PaintSource]) -> PaintSource:
         """Internal helper to create a SolidColor from a string.
 

@@ -61,6 +61,112 @@ class BackgroundPainter(Painter):
         canvas.clipRRect(box_rect, doAntiAlias=True)
 
         paint = skia.Paint(AntiAlias=True)
+        
+        # Apply Image Effects
+        effects = self._style.image_effects.get()
+        if effects:
+            filters = []
+            
+            # Brightness (scale)
+            # JS brightness(150%) -> 1.5 multiplier
+            if effects.brightness != 100:
+                b = effects.brightness / 100.0
+                matrix = [
+                    b, 0, 0, 0, 0,
+                    0, b, 0, 0, 0,
+                    0, 0, b, 0, 0,
+                    0, 0, 0, 1, 0
+                ]
+                filters.append(skia.ColorFilters.Matrix(matrix))
+
+            # Contrast
+            # v' = (v - 0.5) * c + 0.5
+            if effects.contrast != 100:
+                c = effects.contrast / 100.0
+                t = (1.0 - c) / 2.0
+                matrix = [
+                    c, 0, 0, 0, t,
+                    0, c, 0, 0, t,
+                    0, 0, c, 0, t,
+                    0, 0, 0, 1, 0
+                ]
+                filters.append(skia.ColorFilters.Matrix(matrix))
+
+            # Saturation
+            if effects.saturation != 100:
+                s = effects.saturation / 100.0
+                # Skia has MakeLumaColorFilter? No, ColorMatrix usually.
+                # Standard RGB to Luminance constants: 0.2126, 0.7152, 0.0722
+                # sat matrix:
+                # [ r + (1-r)*s,  g*(1-s),    b*(1-s),    0, 0 ]
+                # [ r*(1-s),      g + (1-g)*s,b*(1-s),    0, 0 ]
+                # etc.
+                # Actually skia module usually exposes skia.ColorMatrix or similar?
+                # skia-python binding check: skia.ColorFilters.Matrix(list)
+                
+                # Simplified Saturation Matrix generator
+                rw, gw, bw = 0.2126, 0.7152, 0.0722
+                invS = 1.0 - s
+                R = invS * rw
+                G = invS * gw
+                B = invS * bw
+                
+                matrix = [
+                    R + s, G,     B,     0, 0,
+                    R,     G + s, B,     0, 0,
+                    R,     G,     B + s, 0, 0,
+                    0,     0,     0,     1, 0
+                ]
+                filters.append(skia.ColorFilters.Matrix(matrix))
+                
+            # Warmth (Sepia)
+            if effects.warmth > 0:
+                # Sepia is usually a specific matrix. 
+                # Can blend between normal and sepia based on percentage.
+                amount = effects.warmth / 100.0
+                invAmount = 1.0 - amount
+                
+                # Standard Sepia Matrix
+                # R = 0.393 + 0.769 + 0.189
+                # But we valid mix with identity.
+                # Identity:
+                # 1 0 0 0 0
+                # 0 1 0 0 0
+                # ...
+                
+                # Sepia:
+                # 0.393 0.769 0.189 0 0 
+                # 0.349 0.686 0.168 0 0
+                # 0.272 0.534 0.131 0 0
+                
+                matrix = [
+                    0.393*amount + 1*invAmount, 0.769*amount, 0.189*amount, 0, 0,
+                    0.349*amount, 0.686*amount + 1*invAmount, 0.168*amount, 0, 0,
+                    0.272*amount, 0.534*amount, 0.131*amount + 1*invAmount, 0, 0,
+                    0, 0, 0, 1, 0
+                ]
+                filters.append(skia.ColorFilters.Matrix(matrix))
+
+            # Compose Filters
+            if filters:
+                # Compose from last to first (outer to inner)?
+                # Skia compose(outer, inner).
+                # If we apply brightness then contrast, it means contrast(brightness(pixel)).
+                # So brightness is inner.
+                # Order in list: brightness, contrast, saturation, warmth.
+                # We iterate and compose.
+                # F = filters[0]
+                # F = input -> brightness -> output
+                # Next is contrast. input -> contrast -> output.
+                # We want input -> brightness -> contrast -> ...
+                # So combined = compose(contrast, brightness)
+                
+                final_filter = filters[0]
+                for f in filters[1:]:
+                    final_filter = skia.ColorFilters.Compose(f, final_filter)
+                    
+                paint.setColorFilter(final_filter)
+
         if background_image_info.size_mode == BackgroundImageSizeMode.TILE:
             shader = original_image.makeShader(
                 skia.TileMode.kRepeat,

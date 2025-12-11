@@ -19,8 +19,15 @@ class BackgroundImage:
     def get_skia_image(self) -> Optional[skia.Image]:
         if self._skia_image is None:
             try:
-                self._skia_image = skia.Image.open(self.path)
-            except Exception:
+                if self.path.startswith("data:image/"):
+                    import base64
+                    _, encoded = self.path.split(",", 1)
+                    data = base64.b64decode(encoded)
+                    self._skia_image = skia.Image.MakeFromEncoded(skia.Data.MakeWithCopy(data))
+                else:
+                    self._skia_image = skia.Image.open(self.path)
+            except Exception as e:
+                # print(f"Error loading image: {e}")
                 raise ValueError(f"Could not load background image from: {self.path}")
         return self._skia_image
 

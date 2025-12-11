@@ -2,7 +2,7 @@ from dataclasses import dataclass, field, fields
 from typing import Optional
 from .border import Border, BorderRadius
 from .background import BackgroundImage
-from .effects import Shadow, OutlineStroke
+from .effects import Shadow, OutlineStroke, ImageEffects
 from .layout import Margin, Padding, HorizontalDistribution, VerticalAlignment, HorizontalAlignment, VerticalDistribution
 from .position import Position
 from .style_property import StyleProperty
@@ -40,6 +40,7 @@ class Style:
     margin: StyleProperty[Margin] = field(default_factory=lambda: StyleProperty(Margin(), inheritable=False))
     background_color: StyleProperty[Optional[PaintSource]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     background_image: StyleProperty[Optional[BackgroundImage]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
+    image_effects: StyleProperty[Optional[ImageEffects]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     border: StyleProperty[Optional[Border]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     border_radius: StyleProperty[Optional[BorderRadius]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))
     position: StyleProperty[Optional[Position]] = field(default_factory=lambda: StyleProperty(None, inheritable=False))

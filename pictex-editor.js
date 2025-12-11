@@ -168,6 +168,29 @@ export class PicTexEditor {
                                     <input type="number" id="pt-height">
                                 </div>
                             </div>
+                            <div class="pictex-control-group">
+                                <label>Image Effects</label>
+                                <div class="pictex-row">
+                                    <div class="pictex-control-group" style="flex:1">
+                                        <label style="font-weight:normal; font-size:10px;">Brightness</label>
+                                        <input type="range" id="pt-brightness" min="0" max="200" value="100">
+                                    </div>
+                                    <div class="pictex-control-group" style="flex:1">
+                                        <label style="font-weight:normal; font-size:10px;">Contrast</label>
+                                        <input type="range" id="pt-contrast" min="0" max="200" value="100">
+                                    </div>
+                                </div>
+                                <div class="pictex-row">
+                                    <div class="pictex-control-group" style="flex:1">
+                                        <label style="font-weight:normal; font-size:10px;">Saturation</label>
+                                        <input type="range" id="pt-saturation" min="0" max="200" value="100">
+                                    </div>
+                                    <div class="pictex-control-group" style="flex:1">
+                                        <label style="font-weight:normal; font-size:10px;">Warmth</label>
+                                        <input type="range" id="pt-warmth" min="0" max="100" value="0">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="pictex-control-group">
@@ -256,6 +279,12 @@ export class PicTexEditor {
             rotation: wrapper.querySelector('#pt-rotation'),
             shadowBlur: wrapper.querySelector('#pt-shadow-blur'),
             shadowColor: wrapper.querySelector('#pt-shadow-color'),
+            shadowBlur: wrapper.querySelector('#pt-shadow-blur'),
+            shadowColor: wrapper.querySelector('#pt-shadow-color'),
+            brightness: wrapper.querySelector('#pt-brightness'),
+            contrast: wrapper.querySelector('#pt-contrast'),
+            saturation: wrapper.querySelector('#pt-saturation'),
+            warmth: wrapper.querySelector('#pt-warmth'),
         };
     }
 
@@ -404,7 +433,17 @@ export class PicTexEditor {
                 node._y = parsePct(el.y, baseHeight);
                 node.padding(el.padding || 0);
                 node.borderRadius(el.border_radius || 0);
+                node.borderRadius(el.border_radius || 0);
                 node.rotate(el.angle || el.rotation || 0);
+                if (el.effects) {
+                    node.brightness(el.effects.brightness !== undefined ? el.effects.brightness : 100);
+                    node.contrast(el.effects.contrast !== undefined ? el.effects.contrast : 100);
+                    node.saturation(el.effects.saturation !== undefined ? el.effects.saturation : 100);
+                    node.warmth(el.effects.warmth !== undefined ? el.effects.warmth : 0);
+                } else {
+                    // Backwards compatibility or defaults
+                    node.brightness(100).contrast(100).saturation(100).warmth(0);
+                }
 
                 if (el.background) {
                     if (el.background.type === 'linear_gradient') {
@@ -469,11 +508,14 @@ export class PicTexEditor {
             imgProps.classList.remove('pictex-hidden');
             i.width.value = Math.round(n._computedWidth);
             i.height.value = Math.round(n._computedHeight);
+            i.brightness.value = n._brightness;
+            i.contrast.value = n._contrast;
+            i.saturation.value = n._saturation;
+            i.warmth.value = n._warmth;
         }
 
         // Common
-        i.radius.value = n._borderRadius;
-        i.radius.value = n._borderRadius;
+        i.radius.value = n._borderRadius || 0;
         i.padding.value = n._padding;
         i.rotation.value = n._rotation;
 
@@ -526,6 +568,10 @@ export class PicTexEditor {
         } else {
             n._width = parseInt(i.width.value);
             n._height = parseInt(i.height.value);
+            n.brightness(parseInt(i.brightness.value));
+            n.contrast(parseInt(i.contrast.value));
+            n.saturation(parseInt(i.saturation.value));
+            n.warmth(parseInt(i.warmth.value));
         }
 
         n.borderRadius(parseInt(i.radius.value));
@@ -684,7 +730,15 @@ export class PicTexEditor {
                         ...common,
                         src: node.src,
                         width: (node._computedWidth / baseWidth * 100).toFixed(2) + '%',
-                        height: (node._computedHeight / baseHeight * 100).toFixed(2) + '%'
+                        src: node.src,
+                        width: (node._computedWidth / baseWidth * 100).toFixed(2) + '%',
+                        height: (node._computedHeight / baseHeight * 100).toFixed(2) + '%',
+                        effects: {
+                            brightness: node._brightness,
+                            contrast: node._contrast,
+                            saturation: node._saturation,
+                            warmth: node._warmth
+                        }
                     };
                 }
             })

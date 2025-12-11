@@ -188,6 +188,14 @@ def create_element(el_data, base_width, base_height, child_name, gender):
             elif isinstance(bg, str) and bg.startswith('#'):
                  pictex_el.background_color(SolidColor.from_str(bg))
 
+        # Effects
+        effects = el_data.get('effects')
+        if effects:
+            pictex_el.brightness(float(effects.get('brightness', 100)))
+            pictex_el.contrast(float(effects.get('contrast', 100)))
+            pictex_el.saturation(float(effects.get('saturation', 100)))
+            pictex_el.warmth(float(effects.get('warmth', 0)))
+
     return pictex_el
 
 def main():
@@ -247,9 +255,9 @@ def main():
         print(f"Saved to {args.output_image}")
         
     except Exception as e:
-        print(f"Error: {e}")
+        # print(f"Error: {e}")
         import traceback
-        traceback.print_exc()
+        traceback.print_exc()[:1000]
         sys.exit(1)
 
 if __name__ == "__main__":
