@@ -33,6 +33,7 @@ class RenderNode {
         this._y = 0;
         this._computedWidth = 0;
         this._computedHeight = 0;
+        this._rotation = 0;
     }
 
     padding(value) { this._padding = value; return this; }
@@ -43,6 +44,7 @@ class RenderNode {
     boxShadows(shadow) { this._shadows.push(shadow); return this; }
     width(value) { this._width = value; return this; }
     height(value) { this._height = value; return this; }
+    rotate(value) { this._rotation = value; return this; }
 
     async layout(ctx, maxWidth) {
         // Base layout logic
@@ -53,6 +55,14 @@ class RenderNode {
     render(ctx) {
         ctx.save();
         ctx.translate(this._x, this._y);
+
+        if (this._rotation) {
+            const halfW = this._computedWidth / 2;
+            const halfH = this._computedHeight / 2;
+            ctx.translate(halfW, halfH);
+            ctx.rotate(this._rotation * Math.PI / 180);
+            ctx.translate(-halfW, -halfH);
+        }
 
         // Shadows
         if (this._shadows.length > 0) {
@@ -113,13 +123,27 @@ class RenderNode {
     }
 
     hitTest(x, y) {
-        // Simple bounding box check
-        // Assumes x, y are in the same coordinate space as this._x, this._y
+        // Translate point to node's local space relative to its center
+        const cx = this._x + this._computedWidth / 2;
+        const cy = this._y + this._computedHeight / 2;
+
+        const dx = x - cx;
+        const dy = y - cy;
+
+        // Rotate point in opposite direction
+        const angleRad = -this._rotation * Math.PI / 180;
+        const rx = dx * Math.cos(angleRad) - dy * Math.sin(angleRad);
+        const ry = dx * Math.sin(angleRad) + dy * Math.cos(angleRad);
+
+        // Translate back to top-left relative to unrotated box centered at 0,0
+        const localX = rx + this._computedWidth / 2;
+        const localY = ry + this._computedHeight / 2;
+
         return (
-            x >= this._x &&
-            x <= this._x + this._computedWidth &&
-            y >= this._y &&
-            y <= this._y + this._computedHeight
+            localX >= 0 &&
+            localX <= this._computedWidth &&
+            localY >= 0 &&
+            localY <= this._computedHeight
         );
     }
 }

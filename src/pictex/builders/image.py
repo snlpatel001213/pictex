@@ -82,4 +82,6 @@ class Image(Element, WithSizeMixin):
             height = image.height()
             self.size(width * self._resize_factor, height * self._resize_factor)
 
-        return RowNode(self._style, [])
+        node = RowNode(self._style, [])
+        node.rotation = self._rotation
+        return node

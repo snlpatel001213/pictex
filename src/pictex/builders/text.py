@@ -25,4 +25,6 @@ class Text(Element):
         self._text = text
 
     def _to_node(self) -> Node:
-        return TextNode(self._style, self._text)
+        node = TextNode(self._style, self._text)
+        node.rotation = self._rotation
+        return node

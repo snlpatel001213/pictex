@@ -196,6 +196,14 @@ class Node(Cacheable):
             root_width, root_height = root.size
             self._absolute_position = position.get_relative_position(self_width, self_height, root_width, root_height)
 
+    @property
+    def rotation(self) -> float:
+        return getattr(self, '_rotation', 0.0)
+
+    @rotation.setter
+    def rotation(self, value: float):
+        self._rotation = value
+
     def paint(self, canvas: skia.Canvas) -> None:
         canvas.save()
         absolute_position = self.absolute_position
@@ -203,6 +211,13 @@ class Node(Cacheable):
             raise RuntimeError("Unexpected error: node doesn't have a defined position during paint()")
         x, y = absolute_position
         canvas.translate(x, y)
+        
+        # Apply rotation around the center of the node
+        rotation = self.rotation
+        if rotation != 0:
+            width, height = self.size
+            canvas.rotate(rotation, width / 2, height / 2)
+
         for painter in self._get_painters():
             painter.paint(canvas)
 

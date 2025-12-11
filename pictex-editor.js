@@ -1,5 +1,5 @@
 
-import { PicTexCanvas, ImageNode, Text, Shadow, Group, LinearGradient } from './pictex.js';
+import { PicTexCanvas, ImageNode, Text, Shadow, Group, LinearGradient } from './pictex.js?v=2';
 
 export class PicTexEditor {
     constructor(options = {}) {
@@ -196,6 +196,12 @@ export class PicTexEditor {
                                 <input type="number" id="pt-padding" value="0">
                             </div>
                         </div>
+                        <div class="pictex-row">
+                             <div class="pictex-control-group" style="flex:1">
+                                <label>Rotation</label>
+                                <input type="number" id="pt-rotation" value="0">
+                            </div>
+                        </div>
 
                         <div class="pictex-control-group">
                             <label>Shadow</label>
@@ -247,6 +253,7 @@ export class PicTexEditor {
             gradEnd: wrapper.querySelector('#pt-grad-end'),
             radius: wrapper.querySelector('#pt-radius'),
             padding: wrapper.querySelector('#pt-padding'),
+            rotation: wrapper.querySelector('#pt-rotation'),
             shadowBlur: wrapper.querySelector('#pt-shadow-blur'),
             shadowColor: wrapper.querySelector('#pt-shadow-color'),
         };
@@ -394,7 +401,10 @@ export class PicTexEditor {
                 node._x = parsePct(el.x, baseWidth);
                 node._y = parsePct(el.y, baseHeight);
                 node.padding(el.padding || 0);
+                node._y = parsePct(el.y, baseHeight);
+                node.padding(el.padding || 0);
                 node.borderRadius(el.border_radius || 0);
+                node.rotate(el.angle || el.rotation || 0);
 
                 if (el.background) {
                     if (el.background.type === 'linear_gradient') {
@@ -463,7 +473,9 @@ export class PicTexEditor {
 
         // Common
         i.radius.value = n._borderRadius;
+        i.radius.value = n._borderRadius;
         i.padding.value = n._padding;
+        i.rotation.value = n._rotation;
 
         // Background
         if (n._backgroundColor instanceof LinearGradient) {
@@ -518,6 +530,7 @@ export class PicTexEditor {
 
         n.borderRadius(parseInt(i.radius.value));
         n.padding(parseInt(i.padding.value));
+        n.rotate(parseInt(i.rotation.value));
 
         // Background
         const bgType = i.bgType.value;
@@ -595,12 +608,26 @@ export class PicTexEditor {
 
         if (this.selectedNode) {
             const ctx = this.renderer.ctx;
+            const n = this.selectedNode;
             ctx.save();
             ctx.strokeStyle = '#007bff';
             ctx.lineWidth = 2;
             ctx.setLineDash([5, 5]);
-            ctx.strokeRect(this.selectedNode._x, this.selectedNode._y,
-                this.selectedNode._computedWidth, this.selectedNode._computedHeight);
+
+            // Translate to center of node
+            const cx = n._x + n._computedWidth / 2;
+            const cy = n._y + n._computedHeight / 2;
+            ctx.translate(cx, cy);
+
+            // Rotate
+            if (n._rotation) {
+                ctx.rotate(n._rotation * Math.PI / 180);
+            }
+
+            // Draw rect centered at 0,0
+            ctx.strokeRect(-n._computedWidth / 2, -n._computedHeight / 2,
+                n._computedWidth, n._computedHeight);
+
             ctx.restore();
         }
     }
@@ -629,8 +656,10 @@ export class PicTexEditor {
                     type: node instanceof Text ? 'text' : 'image',
                     x: (node._x / baseWidth * 100).toFixed(2) + '%',
                     y: (node._y / baseHeight * 100).toFixed(2) + '%',
+                    y: (node._y / baseHeight * 100).toFixed(2) + '%',
                     padding: node._padding,
                     border_radius: node._borderRadius,
+                    angle: node._rotation,
                     background: node._backgroundColor instanceof LinearGradient ? {
                         type: 'linear_gradient',
                         colors: node._backgroundColor.colors

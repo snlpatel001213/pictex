@@ -17,6 +17,53 @@ sys.path.append(pictex_src)
 from pictex import (
     Canvas, Text, Image, Shadow, SolidColor, LinearGradient, PositionMode
 )
+import urllib.request
+import tempfile
+import atexit
+import shutil
+
+# Keep track of temp files to clean up
+temp_files = []
+
+def cleanup_temp_files():
+    for f in temp_files:
+        if os.path.exists(f):
+            try:
+                os.remove(f)
+            except:
+                pass
+
+atexit.register(cleanup_temp_files)
+
+def get_image_path(src):
+    """If src is a URL, download it to a temp file. Otherwise return it."""
+    if not src:
+        return src
+    
+    if src.startswith('http://') or src.startswith('https://'):
+        try:
+            suffix = os.path.splitext(src)[1]
+            if not suffix: suffix = '.png'
+            # Remove query params from suffix if present
+            if '?' in suffix:
+                suffix = suffix.split('?')[0]
+                
+            tf = tempfile.NamedTemporaryFile(delete=False, suffix=suffix)
+            tf.close()
+            
+            print(f"Downloading {src} to {tf.name}...")
+            # Use a User-Agent to avoid some 403s
+            req = urllib.request.Request(src, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req) as response, open(tf.name, 'wb') as out_file:
+                shutil.copyfileobj(response, out_file)
+            
+            temp_files.append(tf.name)
+            return tf.name
+        except Exception as e:
+            print(f"Failed to download image {src}: {e}")
+            return src # Fallback, likely will fail in PicTex too but preserves original error flow
+            
+    return src
 
 def apply_variables(text, child_name, gender):
     """Replace placeholders and apply gender conversion."""
@@ -93,11 +140,9 @@ def create_element(el_data, base_width, base_height, child_name, gender):
 
     elif el_type == 'image':
         src = el_data.get('src') 
-        # Note: In a real scenario, this src might be a URL or relative path.
-        # Assuming for now it's a file path accessible to the script.
-        # If it's a base64, Image might need handling.
-        # For this task, we'll assume it's a path.
-        pictex_el = Image(src)
+        # Handle remote URLs
+        local_src = get_image_path(src)
+        pictex_el = Image(local_src)
         
         w = parse_percentage(el_data.get('width'), base_width)
         h = parse_percentage(el_data.get('height'), base_height)
@@ -125,11 +170,13 @@ def create_element(el_data, base_width, base_height, child_name, gender):
         pictex_el.absolute_position(0, 0, x, y) # Top-left anchors, then offsets
         
         # Padding
-        p = el_data.get('padding', 0)
+        p = el_data.get('padding')
+        if p is None: p = 0
         pictex_el.padding(p, p, p, p)
         
         # Border Radius
-        br = el_data.get('border_radius', 0)
+        br = el_data.get('border_radius')
+        if br is None: br = 0
         # pictex might expect 4 values or 1
         pictex_el.border_radius(br, br, br, br) 
         
@@ -178,7 +225,8 @@ def main():
         
         if base_img_path:
              # Add base image as the first element background
-             base_img = Image(base_img_path)
+             local_base_path = get_image_path(base_img_path)
+             base_img = Image(local_base_path)
              # If we can get size of base_img, we should set canvas size.
              # but PicTex Image object might not load generic IO immediately without render.
              # Let's assume for now we just add it.
