@@ -1,0 +1,21 @@
+{
+  "base_image": "",
+  "elements": [
+    {
+      "type": "text",
+      "content": "Hello {child_name}, {gender}. He is a good boy. Him logic check.",
+      "x": "10%",
+      "y": "10%",
+      "font_size": "5%",
+      "color": "#FF0000"
+    },
+     {
+      "type": "text",
+      "content": "His toy. It is his.",
+      "x": "10%",
+      "y": "30%",
+      "font_size": "5%",
+      "color": "#00FF00"
+    }
+  ]
+}
